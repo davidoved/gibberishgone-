@@ -1,27 +1,17 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams, useNavigate, useLocation, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { 
   ArrowLeftRight, 
   ArrowRight, 
   Clipboard, 
   ClipboardCheck, 
-  Trash2, 
-  History, 
-  Globe, 
-  Shield, 
-  Zap, 
-  Mail, 
-  ArrowUp,
-  Info,
-  FileText,
-  ShieldCheck,
   Layout
 } from 'lucide-react';
 import { SupportedLanguage, MAPPINGS, convertText } from './services/mappings';
 import LanguageSelector from './components/LanguageSelector';
 import { RESEARCH_ARTICLES } from './ArchiveLibrary';
 
-type View = 'converter' | 'knowledge' | 'about' | 'privacy' | 'terms' | 'support' | 'how-it-works';
+type View = 'converter' | 'knowledge' | 'about' | 'privacy' | 'terms' | 'support' | 'how-it-works' | 'faq';
 
 const VIEW_MAP: Record<string, View> = {
   'utility': 'converter',
@@ -31,7 +21,7 @@ const VIEW_MAP: Record<string, View> = {
   'privacy': 'privacy',
   'terms': 'terms',
   'contact': 'support',
-  'faq': 'knowledge'
+  'faq': 'faq'
 };
 
 const PATH_MAP: Record<View, string> = {
@@ -41,7 +31,8 @@ const PATH_MAP: Record<View, string> = {
   'how-it-works': 'protocol',
   'privacy': 'privacy',
   'terms': 'terms',
-  'support': 'contact'
+  'support': 'contact',
+  'faq': 'faq'
 };
 
 // --- PREMIUM UI COMPONENTS ---
@@ -74,7 +65,6 @@ const NavigateToDefaultView: React.FC = () => {
 const MainApp: React.FC = () => {
   const { lang, view } = useParams<{ lang: string; view: string }>();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [inputText, setInputText] = useState('');
   const [sourceLang, setSourceLang] = useState<SupportedLanguage>((lang as SupportedLanguage) || 'en');
@@ -96,32 +86,36 @@ const MainApp: React.FC = () => {
     
     switch(currentView) {
       case 'converter':
-        title = "GibberishGone | Universal Input Recovery & Layout Fixer";
-        metaDesc = "Instantly restore text typed in the wrong keyboard layout. A secure, local-first solution for a multilingual world.";
+        title = "GibberishGone | Fix Text Typed in Wrong Keyboard Layout";
+        metaDesc = "Free online tool to fix text typed in the wrong keyboard layout. Convert between QWERTY, Hebrew, Cyrillic, Arabic and more. 100% private — no data sent to servers.";
         break;
       case 'knowledge':
-        title = "The Archive | High-Authority Research on Input & Linguistics";
-        metaDesc = "High-authority articles on the evolution of QWERTY, cognitive science of typing, and input technology.";
+        title = "Guides & Articles | Keyboard Layout Tips and Tutorials";
+        metaDesc = "Practical guides about keyboard layouts, multilingual typing, and how to recover text typed in the wrong language.";
         break;
       case 'about':
-        title = "Manifesto | Input Sovereignty & Digital Ethics";
-        metaDesc = "Learn about our commitment to local-first processing and absolute user data privacy.";
+        title = "About | GibberishGone Keyboard Layout Fixer";
+        metaDesc = "Learn how GibberishGone works, why we built it, and how we keep your data private with client-side processing.";
         break;
       case 'how-it-works':
-        title = "Protocol | Determinocode Mapping Spec";
-        metaDesc = "How we restore text safely without the security risks of cloud-based AI fixers.";
+        title = "How It Works | Keyboard Layout Conversion Explained";
+        metaDesc = "A simple explanation of how keyboard layout conversion works and why our tool keeps your text private.";
         break;
       case 'privacy':
-        title = "Privacy Policy | Zero-Transmission Data Standard";
-        metaDesc = "Read our commitment to zero-transmission local-first processing. Your input data never leaves your browser.";
+        title = "Privacy Policy | GibberishGone";
+        metaDesc = "GibberishGone does not collect, store, or transmit your text. All conversion happens inside your browser.";
         break;
       case 'terms':
-        title = "Terms of Service | Professional Usage Agreement";
-        metaDesc = "Usage agreement for the GibberishGone input restoration utility.";
+        title = "Terms of Service | GibberishGone";
+        metaDesc = "Terms of service for using the GibberishGone keyboard layout recovery tool.";
         break;
       case 'support':
-        title = "Contact Us | Technical Support Portal";
-        metaDesc = "Get in touch with the GibberishGone engineering team for technical support.";
+        title = "Contact Us | GibberishGone Support";
+        metaDesc = "Contact the GibberishGone team for bug reports, feature requests, or questions about supported keyboard layouts.";
+        break;
+      case 'faq':
+        title = "FAQ | Frequently Asked Questions | GibberishGone";
+        metaDesc = "Find answers to common questions about using GibberishGone, supported keyboard layouts, privacy, and offline use.";
         break;
     }
     
@@ -191,8 +185,9 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <div className="glass-panel rounded-[2.5rem] p-10 md:p-14 flex flex-col h-[450px] md:h-[650px] relative overflow-hidden group">
-                <label className="text-[10px] font-black uppercase tracking-[0.5em] text-teal-400/50 mb-8">Input Matrix</label>
+                <label htmlFor="input-textarea" className="text-[10px] font-black uppercase tracking-[0.5em] text-teal-400/50 mb-8">Input Matrix</label>
                 <textarea 
+                  id="input-textarea"
                   value={inputText} 
                   onChange={(e) => setInputText(e.target.value)} 
                   placeholder="Type in wrong layout to fix" 
@@ -211,11 +206,11 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
 
               <div className="glass-panel rounded-[2.5rem] p-10 md:p-14 flex flex-col h-[450px] md:h-[650px] relative overflow-hidden group border-teal-500/10">
                 <div className="absolute inset-0 bg-teal-500/[0.02] pointer-events-none"></div>
-                <label className="text-[10px] font-black uppercase tracking-[0.5em] text-teal-400 mb-8 flex items-center gap-4">
+                <label htmlFor="output-display" className="text-[10px] font-black uppercase tracking-[0.5em] text-teal-400 mb-8 flex items-center gap-4">
                   Restored Sequence
                   <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse shadow-[0_0_12px_rgba(45,212,191,0.5)]"></span>
                 </label>
-                <div className="flex-1 overflow-y-auto text-4xl md:text-6xl font-mono text-teal-100 whitespace-pre-wrap leading-tight scrollbar-hide">
+                <div id="output-display" className="flex-1 overflow-y-auto text-4xl md:text-6xl font-mono text-teal-100 whitespace-pre-wrap leading-tight scrollbar-hide">
                   {outputText || <span className="text-slate-900 italic font-sans text-2xl font-light">Analyzing stream...</span>}
                 </div>
                 <div className="relative mt-10">
@@ -237,95 +232,108 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
             </div>
           </div>
 
-          {/* DISCOVERY SECTION */}
+          {/* EXAMPLES & HOW IT WORKS */}
           <section className="max-w-7xl mx-auto py-20 px-4">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">How It Works in Practice</h2>
+              <p className="text-slate-400 text-lg md:text-xl max-w-3xl mx-auto font-light leading-relaxed">
+                Select the layout you accidentally typed in, choose the layout you intended, and paste your text. The tool converts it instantly.
+              </p>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="glass-card p-10 rounded-3xl flex flex-col justify-between">
                 <div>
-                  <h4 className="text-xl font-bold text-white mb-4">The Science of Recovery: Why We Archive?</h4>
-                  <p className="text-slate-500 mb-6 font-light leading-relaxed">Beyond simple text restoration lies a complex intersection of 19th-century mechanical engineering and modern cognitive neurology. Our Archive documents the 150-year-old historical inertia of the QWERTY layout and the deterministic logic required to reverse systemic layout mismatches. Explore the research behind the recovery—from path-dependent standards to the cerebellar loops of muscle memory—and discover why precision input matters in a multilingual world.</p>
+                  <h4 className="text-xl font-bold text-white mb-4">Hebrew Typed in English Layout</h4>
+                  <p className="text-slate-500 mb-4 font-light leading-relaxed text-sm">You meant to type Hebrew but your keyboard was set to English. The physical keys you pressed produced Latin characters.</p>
+                  <div className="bg-slate-900/50 rounded-xl p-4 font-mono text-sm space-y-2">
+                    <div className="text-slate-500">Input (English layout):</div>
+                    <div className="text-white">akuo dksc</div>
+                    <div className="text-teal-400 mt-2">Restored (Hebrew):</div>
+                    <div className="text-teal-100" dir="rtl">שלום כיתה</div>
+                  </div>
                 </div>
-                <Link to={`/${sourceLang}/archive`} className="text-teal-400 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors flex items-center gap-2">
-                  Read History <ArrowRight className="w-4 h-4" />
+                <Link to={`/${sourceLang}/archive`} className="text-teal-400 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors flex items-center gap-2 mt-6">
+                  Hebrew Guide <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
               <div className="glass-card p-10 rounded-3xl flex flex-col justify-between">
                 <div>
-                  <h4 className="text-xl font-bold text-white mb-4">The Historical Inertia of QWERTY: A Study in Path Dependency</h4>
-                  <p className="text-slate-500 mb-6 font-light leading-relaxed">The QWERTY keyboard layout stands as one of the most persistent technological standards in modern history. Designed in 1873 by Christopher Latham Sholes, QWERTY was never intended to be optimal. It was, in essence, a mechanical workaround...</p>
+                  <h4 className="text-xl font-bold text-white mb-4">Russian Typed in English Layout</h4>
+                  <p className="text-slate-500 mb-4 font-light leading-relaxed text-sm">Your keyboard was on English QWERTY, but you intended to type Russian JCUKEN. The result looks like random Latin letters.</p>
+                  <div className="bg-slate-900/50 rounded-xl p-4 font-mono text-sm space-y-2">
+                    <div className="text-slate-500">Input (English layout):</div>
+                    <div className="text-white">rjvgtyn</div>
+                    <div className="text-teal-400 mt-2">Restored (Russian):</div>
+                    <div className="text-teal-100">компьютер</div>
+                  </div>
                 </div>
-                <Link to={`/${sourceLang}/archive`} className="text-teal-400 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors flex items-center gap-2">
-                  Explore Culture <ArrowRight className="w-4 h-4" />
+                <Link to={`/${sourceLang}/archive`} className="text-teal-400 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors flex items-center gap-2 mt-6">
+                  Layout Guide <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
               <div className="glass-card p-10 rounded-3xl flex flex-col justify-between border-teal-500/10">
                 <div>
-                  <h4 className="text-xl font-bold text-white mb-4">The Neurology of Muscle Memory in High-Speed Typing</h4>
-                  <p className="text-slate-500 mb-6 font-light leading-relaxed">High-speed typing is one of the clearest real-world demonstrations of procedural memory, often described as 'muscle memory.' Contrary to popular belief, muscles do not store memory. The brain does. Specifically, repeated typing strengthens neural pathways in the motor cortex, cerebellum, and basal ganglia...</p>
+                  <h4 className="text-xl font-bold text-white mb-4">Completely Private Processing</h4>
+                  <p className="text-slate-500 mb-4 font-light leading-relaxed text-sm">Unlike online translation tools or AI rewriters, your text never leaves your browser. This makes it safe for passwords, emails, and confidential documents.</p>
+                  <div className="bg-slate-900/50 rounded-xl p-4 font-mono text-sm space-y-2">
+                    <div className="text-slate-500">Your text stays here:</div>
+                    <div className="text-white">Browser memory only</div>
+                    <div className="text-teal-400 mt-2">Never sent to:</div>
+                    <div className="text-teal-100">Servers, AI APIs, logs</div>
+                  </div>
                 </div>
-                <Link to={`/${sourceLang}/archive`} className="text-teal-400 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors flex items-center gap-2">
-                  Full Research <ArrowRight className="w-4 h-4" />
+                <Link to={`/${sourceLang}/manifesto`} className="text-teal-400 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors flex items-center gap-2 mt-6">
+                  Privacy Details <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
             </div>
             <div className="mt-12 text-center">
-              <Link to={`/${sourceLang}/archive`} className="px-12 py-5 bg-white/5 hover:bg-white/10 rounded-full text-slate-400 text-sm font-bold uppercase tracking-widest transition-all">Read the Full Research Archive</Link>
+              <Link to={`/${sourceLang}/archive`} className="px-12 py-5 bg-white/5 hover:bg-white/10 rounded-full text-slate-400 text-sm font-bold uppercase tracking-widest transition-all">Browse All Guides</Link>
             </div>
           </section>
 
           <section className="max-w-6xl mx-auto py-40 border-t border-white/5 space-y-40">
             <div className="text-center">
-              <h2 className="text-6xl md:text-[7rem] font-black text-white mb-12 tracking-tighter">Pure Precision.</h2>
+              <h2 className="text-6xl md:text-[7rem] font-black text-white mb-12 tracking-tighter">Fast. Private. Free.</h2>
               <p className="text-slate-400 text-2xl md:text-4xl leading-[1.6] max-w-4xl mx-auto font-light">
-                Engineering a fluid digital experience for high-stakes multilingual communication.
+                A simple tool for a common problem. No signup, no cloud processing, no limits.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
               <div className="space-y-10 group">
                 <div className="w-16 h-1.5 bg-teal-500 group-hover:w-32 transition-all duration-700"></div>
-                <h3 className="text-5xl font-bold text-white tracking-tight">Cerebellar Integration</h3>
+                <h3 className="text-5xl font-bold text-white tracking-tight">How It Works</h3>
                 <p className="text-slate-400 text-2xl leading-relaxed font-light">
-                  Typing is a subconscious motor process. When layout errors break your flow, they trigger "Syntactic Shock." We bridge this cognitive gap, acting as a real-time neural patch. <Link to={`/${sourceLang}/archive`} className="text-teal-400 border-b border-teal-500/20 hover:text-white transition-colors">Documentation</Link>
+                  Every keyboard key sends a fixed signal to your computer. The operating system uses a lookup table called a keyboard layout to decide which character to show. When the wrong layout is active, the signals are correct but the lookup table is wrong. Our tool simply applies the correct lookup table to recover your original text. <Link to={`/${sourceLang}/protocol`} className="text-teal-400 border-b border-teal-500/20 hover:text-white transition-colors">Read the technical explanation</Link>
                 </p>
               </div>
               <div className="space-y-10 group">
                 <div className="w-16 h-1.5 bg-teal-500 group-hover:w-32 transition-all duration-700"></div>
-                <h3 className="text-5xl font-bold text-white tracking-tight">Zero-Transmission</h3>
+                <h3 className="text-5xl font-bold text-white tracking-tight">Your Data Stays Yours</h3>
                 <p className="text-slate-400 text-2xl leading-relaxed font-light">
-                  Your keystrokes are processed strictly within local volatile memory. We reject the cloud-first surveillance model in favor of absolute <Link to={`/${sourceLang}/manifesto`} className="text-teal-400 border-b border-teal-500/20 hover:text-white transition-colors">input sovereignty</Link>.
+                  We do not collect, store, or transmit your text. The conversion happens entirely inside your browser using JavaScript. Once you close the tab, the text is gone. This makes GibberishGone safe for sensitive content like passwords, medical notes, or legal documents. <Link to={`/${sourceLang}/privacy`} className="text-teal-400 border-b border-teal-500/20 hover:text-white transition-colors">Read our privacy policy</Link>
                 </p>
               </div>
             </div>
           </section>
         </div>
       );
-     case 'knowledge': return (
+      case 'knowledge': return (
   <div className="w-full max-w-6xl animate-reveal px-8 pb-64 mx-auto">
     <header className="text-center mb-16 pt-32">
       <div className="mb-12">
          <Link to={`/${sourceLang}/utility`} className="px-6 py-3 bg-white/5 hover:bg-white/10 rounded-full text-xs font-bold uppercase tracking-widest text-slate-500 transition-all">← Back to Restoration Tool</Link>
       </div>
       <h1 className="text-7xl md:text-[10rem] font-black text-white mb-12 font-magazine tracking-tighter italic leading-[0.85]">The Archive.</h1>
-      <p className="text-teal-400 opacity-60 text-2xl md:text-3xl font-light italic leading-relaxed">Exhaustive research on Digital Input, HCI, and Evolutionary Linguistics.</p>
-      <div className="mt-8">
-        <Link to={`/${sourceLang}/archive`} className="text-[10px] uppercase tracking-[0.3em] text-slate-500 hover:text-cyan-400 transition-all duration-300 hover:[text-shadow:0_0_8px_rgba(34,211,238,0.4)]">DATABASE LOGS</Link>
-      </div>
+      <p className="text-teal-400 opacity-60 text-2xl md:text-3xl font-light italic leading-relaxed">Practical guides and references for multilingual typists.</p>
     </header>
     <div className="space-y-32">
-      {articles.map((art, idx) => (
-        <article key={idx} className="glass-panel rounded-[2rem] p-10 md:p-16 mb-12 transition-all w-full group overflow-hidden relative border border-white/5">
+      {articles.map((art) => (
+        <article key={art.id} className="glass-panel rounded-[2rem] p-10 md:p-16 mb-12 transition-all w-full group overflow-hidden relative border border-white/5">
           <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-teal-500/[0.02] blur-[100px] pointer-events-none"></div>
-          <span className="text-teal-400 font-mono text-[9px] tracking-[0.4em] uppercase mb-4 block opacity-60 group-hover:opacity-100 transition-opacity">{art.category}</span>
-          
-          {/* Author and Meta Info */}
-          <div className="flex flex-wrap items-center gap-4 mb-8 text-slate-500 text-sm">
-            {art.author && (
-              <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
-                By {art.author}
-              </span>
-            )}
+          <div className="flex flex-wrap items-center gap-4 mb-6 text-slate-500 text-sm">
+            <span className="text-teal-400 font-mono text-[9px] tracking-[0.4em] uppercase opacity-60 group-hover:opacity-100 transition-opacity">{art.category}</span>
             {art.readTime && (
               <span className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
@@ -333,30 +341,14 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
               </span>
             )}
           </div>
-          
+
           <h2 className="text-3xl md:text-5xl font-black text-white mb-10 leading-[1.1] tracking-tighter font-magazine italic">{art.title}</h2>
-          
+
           <div className="prose prose-invert prose-teal max-w-none text-slate-400/90 space-y-6 text-lg md:text-xl leading-[1.6] font-light">
             {art.content.map((para, pIdx) => (
-              <p key={pIdx}>{para}</p>
+              <p key={`${art.id}-${pIdx}`}>{para}</p>
             ))}
           </div>
-          
-          {/* Sources Section */}
-          {art.sources && art.sources.length > 0 && (
-            <div className="mt-10 pt-8 border-t border-white/10">
-              <h4 className="text-teal-400 font-mono text-[10px] tracking-[0.3em] uppercase mb-4">Sources & References</h4>
-              <ul className="space-y-2 text-slate-500 text-sm">
-                {art.sources.map((source, sIdx) => (
-                  <li key={sIdx} className="flex items-start gap-2">
-                    <span className="text-teal-400/50 mt-1">[</span>
-                    <span>{source}</span>
-                    <span className="text-teal-400/50 mt-1">]</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </article>
       ))}
     </div>
@@ -367,50 +359,40 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
 );
       case 'about': return (
         <div className="w-full max-w-5xl animate-reveal px-8 mx-auto pt-32">
-          <ContentSection badge="The Manifesto" title="Input Sovereignty">
-            <p>At GibberishGone, we perceive your input as the literal <strong>digital manifestation of your thought process</strong>. Every sequence represents private thought, creative energy, and confidential logic. Our mandate is to provide world-class utility without data exploitation.</p>
-            <p>We advocate for <strong>Local-First Architecture</strong>. Most competitive tools function as covert data collectors, but we operate on a mathematical zero-transmission standard. Your text never leaves your machine.</p>
-            
-            {/* Team & Expertise Section for E-E-A-T */}
+          <ContentSection badge="About" title="What Is GibberishGone?">
+            <p>GibberishGone is a free online tool that fixes text typed in the wrong keyboard layout. If you accidentally typed a Hebrew email while your computer was set to English, or wrote English code while the layout was stuck on Russian, this tool converts the text back to what you originally intended — instantly and entirely in your browser.</p>
+            <p>We built this tool because we experienced the problem ourselves. As multilingual developers and writers, we kept losing paragraphs of work to simple layout slips. Existing solutions were either cloud-based (sending our text to unknown servers) or too limited in the languages they supported. We wanted something fast, private, and accurate.</p>
+
             <div className="mt-12 p-8 rounded-2xl bg-white/5 border border-white/10">
-              <h3 className="text-teal-400 font-mono text-[10px] tracking-[0.3em] uppercase mb-6">Expertise & Credentials</h3>
-              <p className="text-slate-400 mb-6">GibberishGone is developed by a team of software engineers, computational linguists, and information security specialists with combined decades of experience in:</p>
+              <h3 className="text-teal-400 font-mono text-[10px] tracking-[0.3em] uppercase mb-6">What We Focus On</h3>
               <ul className="space-y-3 text-slate-400">
                 <li className="flex items-center gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
-                  Unicode internationalization standards and multilingual computing systems
+                  Accurate, deterministic conversion based on official keyboard layout standards
                 </li>
                 <li className="flex items-center gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
-                  Client-side security architecture and zero-transmission protocols
+                  Complete privacy — your text is never transmitted to our servers or any third party
                 </li>
                 <li className="flex items-center gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
-                  Human-computer interaction (HCI) and cognitive ergonomics research
+                  Support for Hebrew, Arabic, Cyrillic, and many European and Asian layouts
                 </li>
                 <li className="flex items-center gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
-                  Bidirectional text algorithms and complex script rendering
+                  Educational content that helps users understand and prevent layout errors
                 </li>
               </ul>
             </div>
 
-            {/* Research Publications */}
             <div className="mt-8 p-8 rounded-2xl bg-white/5 border border-white/10">
-              <h3 className="text-teal-400 font-mono text-[10px] tracking-[0.3em] uppercase mb-6">Research & Publications</h3>
-              <p className="text-slate-400 mb-4">Our research appears in peer-reviewed publications and industry standards bodies:</p>
-              <ul className="space-y-2 text-slate-500 text-sm">
-                <li>• Journal of Human-Computer Interaction, Vol. 34 (2023)</li>
-                <li>• ACM SIGACCESS - Accessible Computing Research</li>
-                <li>• IEEE Privacy Engineering Standards Committee</li>
-                <li>• Unicode Consortium Technical Reports</li>
-                <li>• W3C Internationalization Working Group contributions</li>
-              </ul>
+              <h3 className="text-teal-400 font-mono text-[10px] tracking-[0.3em] uppercase mb-6">How the Tool Works</h3>
+              <p className="text-slate-400 mb-4">The conversion engine uses standard keyboard layout mapping tables published by national standards bodies and operating system vendors. When you paste scrambled text, the tool looks up each character against the mapping table for the layout that was accidentally active, then outputs the corresponding character from the layout you intended. There is no artificial intelligence, no probabilistic guessing, and no server involved. The entire process happens in your browser using JavaScript.</p>
             </div>
 
             <div className="flex gap-6 pt-10">
-              <Link to={`/${sourceLang}/protocol`} className="px-8 py-4 rounded-xl border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition-all font-black uppercase tracking-widest text-[11px]">Technical Protocol</Link>
-              <Link to={`/${sourceLang}/archive`} className="px-8 py-4 rounded-xl border border-white/10 text-white hover:bg-white/5 transition-all font-black uppercase tracking-widest text-[11px]">Research Archive</Link>
+              <Link to={`/${sourceLang}/protocol`} className="px-8 py-4 rounded-xl border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition-all font-black uppercase tracking-widest text-[11px]">Technical Details</Link>
+              <Link to={`/${sourceLang}/archive`} className="px-8 py-4 rounded-xl border border-white/10 text-white hover:bg-white/5 transition-all font-black uppercase tracking-widest text-[11px]">Read Guides</Link>
             </div>
           </ContentSection>
         </div>
@@ -469,17 +451,60 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
           </ContentSection>
         </div>
       );
+      case 'faq': return (
+        <div className="w-full max-w-5xl animate-reveal px-8 mx-auto pt-32">
+          <ContentSection badge="FAQ" title="Frequently Asked Questions">
+            <div className="space-y-10">
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">Is GibberishGone really free?</h4>
+                <p>Yes. The tool is free to use with no registration, no usage limits, and no premium tiers. We support development through non-intrusive advertising.</p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">Does my text get sent to your servers?</h4>
+                <p>No. The conversion happens entirely inside your web browser. When you paste text, it enters your browser's temporary memory and is processed by JavaScript code that was downloaded when you first loaded the page. We cannot see, store, or analyze your text because it never reaches us.</p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">Which keyboard layouts are supported?</h4>
+                <p>We support English QWERTY, Hebrew (SI-1452), Russian JCUKEN, Arabic (101), French AZERTY, German QWERTZ, Spanish, Italian, Portuguese, Turkish, Greek, and several others. If you need a layout that is not listed, contact us and we will add it.</p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">Can I use this tool offline?</h4>
+                <p>Once the page has loaded, you can disconnect from the internet and continue using it. The tool does not require an active connection after the initial page load. However, you cannot load the page for the first time without internet access.</p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">Will the tool work on my phone?</h4>
+                <p>Yes. The website is responsive and works on iOS Safari, Android Chrome, and most mobile browsers. Note that mobile virtual keyboards sometimes behave differently from physical keyboards, so results may vary for text originally typed on a phone.</p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">Can I convert in both directions?</h4>
+                <p>Yes. You can set any supported layout as the source and any other as the target. Use the swap button in the middle of the screen to reverse the direction instantly.</p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">Why does the result still look wrong sometimes?</h4>
+                <p>This usually means the source layout you selected was not the one that was active when the text was originally typed. Try the next most likely layout for your region. For example, if English did not work, try French AZERTY or German QWERTZ if you were using a European computer.</p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">Does the tool fix spelling mistakes?</h4>
+                <p>No. This tool only fixes layout mismatches — when the right keys were pressed but the wrong language was active. It does not correct spelling, grammar, or typos. If you actually misspelled a word, it will remain misspelled after conversion.</p>
+              </div>
+            </div>
+          </ContentSection>
+        </div>
+      );
       case 'support': return (
         <div className="w-full max-w-5xl animate-reveal px-8 mx-auto pt-32">
           <ContentSection badge="Support" title="Contact Us">
-            <p>For technical inquiries, bug reports, or enterprise partnership opportunities, please reach out to our engineering team.</p>
+            <p>For bug reports, feature requests, or questions about supported keyboard layouts, please reach out by email.</p>
             <div className="mt-16 p-14 rounded-[2.5rem] bg-teal-500/5 border border-teal-500/20 text-center space-y-6">
-              <span className="text-[11px] font-black uppercase tracking-[0.5em] text-teal-400/60 block">Engineering Liaison Vector</span>
+              <span className="text-[11px] font-black uppercase tracking-[0.5em] text-teal-400/60 block">Email</span>
               <a href="mailto:shoprdo63@gmail.com" className="text-3xl md:text-5xl font-black text-white hover:text-teal-400 transition-all">
                 shoprdo63@gmail.com
               </a>
             </div>
-            <p className="mt-16 text-slate-500 font-light leading-relaxed text-lg">Our technical team monitors this portal for high-authority feedback. We aim to respond to architecture-related queries within 48 business hours.</p>
+            <p className="mt-16 text-slate-500 font-light leading-relaxed text-lg">We read every message and aim to respond within a few business days. For faster answers to common questions, please check the FAQ page first.</p>
+            <div className="mt-8">
+              <Link to={`/${sourceLang}/faq`} className="px-8 py-4 rounded-xl border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition-all font-black uppercase tracking-widest text-[11px]">Visit FAQ</Link>
+            </div>
           </ContentSection>
         </div>
       );
@@ -552,7 +577,7 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
                 <h3 className="text-white/40 font-black mb-10 uppercase tracking-[0.5em] text-[10px]">SUPPORT</h3>
                 <nav className="flex flex-col gap-8 font-black tracking-[0.2em] text-xs">
                   <Link to={`/${sourceLang}/contact`} className="hover:text-teal-400 transition-colors uppercase">Contact Us</Link>
-                  <Link to={`/${sourceLang}/archive`} className="hover:text-teal-400 transition-colors uppercase">FAQ</Link>
+                  <Link to={`/${sourceLang}/faq`} className="hover:text-teal-400 transition-colors uppercase">FAQ</Link>
                 </nav>
               </div>
               <div>
