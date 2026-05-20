@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { SupportedLanguage, MAPPINGS, convertText } from './services/mappings';
 import LanguageSelector from './components/LanguageSelector';
+import AdSense from './components/AdSense';
 import { RESEARCH_ARTICLES } from './ArchiveLibrary';
 
 type View = 'converter' | 'knowledge' | 'about' | 'privacy' | 'terms' | 'support' | 'how-it-works' | 'faq';
@@ -164,6 +165,7 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
     switch(currentView) {
       case 'converter': return (
         <div className="w-full max-w-[1600px] animate-reveal px-8 mx-auto">
+          <AdSense />
           <header className="text-center mb-16 pt-16 md:pt-32">
             <h1 className="text-5xl md:text-[8rem] font-black mb-10 bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/30 tracking-[-0.05em] leading-[0.85] flex flex-col items-center">
               Universal Input <br/> Recovery <span className="text-teal-400">&</span> Layout Fixer
@@ -321,6 +323,7 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
       );
       case 'knowledge': return (
   <div className="w-full max-w-6xl animate-reveal px-8 pb-64 mx-auto">
+    <AdSense />
     <header className="text-center mb-16 pt-32">
       <div className="mb-12">
          <Link to={`/${sourceLang}/utility`} className="px-6 py-3 bg-white/5 hover:bg-white/10 rounded-full text-xs font-bold uppercase tracking-widest text-slate-500 transition-all">← Back to Restoration Tool</Link>
@@ -402,6 +405,15 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
           <ContentSection badge="The Protocol" title="Deterministic Spec">
             <p>While AI models attempt to "predict" your text based on probability, GibberishGone utilizes <strong>Deterministic Scancode Mapping</strong>. By reversing the OS-level lookup tables, we reconstruct your original intent with bit-perfect accuracy.</p>
             
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">How Keyboard Layouts Work</h4>
+            <p>Every keyboard key produces a fixed electrical signal called a "scan code" when pressed. This signal is the same regardless of what language you're typing. The operating system uses a lookup table (the keyboard layout) to translate each scan code into a character. When you press the physical key that produces scan code 30, the OS looks up 30 in the active layout table. If the layout is English QWERTY, it displays "a". If it's Hebrew SI-1452, it displays "ש". The hardware never changes—only the software mapping does.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">The Layout Mismatch Problem</h4>
+            <p>A layout mismatch occurs when the active layout doesn't match the language you intend to type. You press the physical keys for "hello" but the layout is Hebrew, so you see "קסדף". The scan codes are correct, but the lookup table is wrong. The text isn't random—it's perfectly predictable because the relationship between scan codes and characters is fixed. This reversibility is what makes recovery possible.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">Deterministic vs. Probabilistic Recovery</h4>
+            <p>Most online tools use AI or statistical models to "guess" what you meant. They look at character frequency, common words, and context clues. This approach is probabilistic—it might work often, but it can never be 100% certain. GibberishGone uses a different approach: deterministic mapping. We know exactly which character each scan code produces in each layout because these mappings are standardized by national and international bodies. By applying the reverse mapping, we recover your original text with mathematical certainty.</p>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16 my-16 py-14 border-y border-white/5">
               <div className="space-y-8">
                 <h3 className="text-teal-400 font-black uppercase tracking-[0.4em] text-[11px]">Deterministic (Elite)</h3>
@@ -409,6 +421,7 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
                   <li className="flex items-center gap-4 text-white"><span className="w-2 h-2 bg-teal-400 shadow-[0_0_10px_rgba(45,212,191,0.8)]"></span> 100% Precise Recovery</li>
                   <li className="flex items-center gap-4 text-white"><span className="w-2 h-2 bg-teal-400 shadow-[0_0_10px_rgba(45,212,191,0.8)]"></span> Local RAM Process</li>
                   <li className="flex items-center gap-4 text-white"><span className="w-2 h-2 bg-teal-400 shadow-[0_0_10px_rgba(45,212,191,0.8)]"></span> Preserves Symbol Logic</li>
+                  <li className="flex items-center gap-4 text-white"><span className="w-2 h-2 bg-teal-400 shadow-[0_0_10px_rgba(45,212,191,0.8)]"></span> Works for Any Content Type</li>
                 </ul>
               </div>
               <div className="space-y-8 opacity-20 grayscale">
@@ -417,11 +430,28 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
                   <li className="flex items-center gap-4"> Statistical Guessing</li>
                   <li className="flex items-center gap-4"> Cloud Latency / Leaks</li>
                   <li className="flex items-center gap-4"> Context Drift</li>
+                  <li className="flex items-center gap-4"> Fails on Technical Terms</li>
                 </ul>
               </div>
             </div>
 
-            <p className="font-light">Our engine maintains surgical precision for code, legal text, and medical terminology. By eliminating the cloud gap, we fulfill the highest security mandates for global enterprises.</p>
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">The Conversion Process</h4>
+            <p>When you paste text into GibberishGone, the conversion engine performs the following steps:</p>
+            <ol className="space-y-3 text-slate-400 mt-4 list-decimal list-inside">
+              <li className="ml-4">The engine reads each character in your input text</li>
+              <li className="ml-4">It looks up the scan code that would produce that character in the source layout (the layout you accidentally used)</li>
+              <li className="ml-4">It then looks up which character that scan code produces in the target layout (the layout you intended)</li>
+              <li className="ml-4">The target character is added to the output</li>
+              <li className="ml-4">This process repeats for every character in the input</li>
+            </ol>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">Why This Matters for Sensitive Content</h4>
+            <p>Deterministic mapping is crucial for sensitive content because it doesn't rely on context or meaning. A password, a medical code, a legal reference, or a technical identifier will be recovered correctly regardless of whether it appears in a dictionary or makes semantic sense. AI-based tools might "correct" these to something that looks like a real word, destroying their validity. GibberishGone preserves the exact sequence of characters you intended, character by character.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">Offline Capability</h4>
+            <p>Because the conversion uses only fixed mapping tables and standard JavaScript, the tool works entirely offline once the page has loaded. This is not a feature—it's a consequence of our architecture. We don't need to call an API or access a database because all the necessary data (the mapping tables) is embedded in the application code that downloads to your browser. This also means the tool works in secure environments with restricted internet access.</p>
+
+            <p className="font-light mt-8">Our engine maintains surgical precision for code, legal text, and medical terminology. By eliminating the cloud gap, we fulfill the highest security mandates for global enterprises.</p>
           </ContentSection>
         </div>
       );
@@ -429,25 +459,83 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
         <div className="w-full max-w-5xl animate-reveal px-8 mx-auto pt-32">
           <ContentSection badge="Legal" title="Privacy Policy">
             <p>GibberishGone is engineered as a <strong>Zero-Transmission Utility</strong>. We provide the following explicit declarations regarding your data privacy and digital sovereignty.</p>
+            
             <h4 className="text-white font-bold mt-10 mb-5 text-xl">1. Data Sovereignty and Zero-Transmission</h4>
-            <p><strong>We do not collect, store, or share any user-inputted text. All data remains in your browser's volatile memory.</strong> All character mapping and deterministic restoration occur strictly within the client-side RAM of your local environment. Your input data never leaves your browser.</p>
-            <h4 className="text-white font-bold mt-10 mb-5 text-xl">2. Essential Cookies and Advertising</h4>
-            <p>We use essential cookies solely for core application functionality and Google AdSense compliance. These cookies help us serve non-personalized advertisements to keep the tool free for all users without compromising the privacy of your actual input strings.</p>
-            <h4 className="text-white font-bold mt-10 mb-5 text-xl">3. Compliance Standards</h4>
-            <p>Our architecture is built to meet the most stringent global privacy standards, including GDPR and CCPA, by effectively "anonymizing by design." Since no personal text data is transmitted to our infrastructure, the risk of interception or leak is effectively zero.</p>
+            <p><strong>We do not collect, store, or share any user-inputted text. All data remains in your browser's volatile memory.</strong> All character mapping and deterministic restoration occur strictly within the client-side RAM of your local environment. Your input data never leaves your browser. When you close the tab or refresh the page, all text is immediately purged from memory. We maintain no server-side databases, logs, or caching systems that could capture your input.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">2. What We Collect</h4>
+            <p>We collect minimal, non-personal technical data solely for improving service reliability and basic analytics. This includes: anonymous page view counts, browser type and version for compatibility optimization, approximate geographic region at country level for content localization, and session duration metrics. We do not collect IP addresses, device fingerprints, or any identifiers that could be used to track individual users across sessions.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">3. Essential Cookies and Advertising</h4>
+            <p>We use essential cookies solely for core application functionality and Google AdSense compliance. These cookies help us serve non-personalized advertisements to keep the tool free for all users without compromising the privacy of your actual input strings. AdSense cookies are used solely for ad delivery and fraud prevention; they do not access your converted text or any personal information. You may disable cookies in your browser settings, though this may affect ad display.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">4. Third-Party Services</h4>
+            <p>We use Google AdSense to display advertisements. Google may use cookies to serve ads based on your prior visits to this website or other websites. Google's use of advertising cookies enables it and its partners to serve ads to you based on your visits to this site and/or other sites on the Internet. However, AdSense does not have access to any text you input into GibberishGone, as that data never leaves your browser. We do not sell, trade, or rent your personal identification information to any third party for any purpose.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">5. Data Retention</h4>
+            <p>Since we do not collect or store user-inputted text, there is no data to retain. Technical analytics data is retained in aggregate, anonymized form for up to 12 months for service improvement purposes. After this period, all analytics data is permanently deleted. We never retain data that could be used to reconstruct individual user sessions or identify specific users.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">6. Your Rights Under GDPR and CCPA</h4>
+            <p>Under the General Data Protection Regulation (GDPR) and California Consumer Privacy Act (CCPA), you have the right to access, delete, or restrict processing of your personal data. Since GibberishGone does not collect personal data or user-inputted text, there is no personal data to access or delete. If you believe we have inadvertently collected personal information, please contact us using the information in our Support section, and we will promptly investigate and remediate any such collection.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">7. Security Measures</h4>
+            <p>We implement industry-standard security measures to protect the limited data we do collect. Our website uses HTTPS encryption for all data transmission. Our servers are hosted in secure, access-controlled data centers. We regularly audit our systems for vulnerabilities and promptly apply security patches. However, the most significant security measure is our zero-transmission architecture—by never receiving your text, we eliminate the entire attack surface associated with data storage and transmission.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">8. Children's Privacy</h4>
+            <p>GibberishGone is not directed to children under the age of 13. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us, and we will delete such information.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">9. International Data Transfers</h4>
+            <p>Since we do not collect or store personal data, there are no international data transfers. The application code is delivered to your browser from content delivery networks that may operate globally, but this code contains no user data. All processing occurs locally in your browser regardless of your geographic location.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">10. Changes to This Privacy Policy</h4>
+            <p>We may update this privacy policy from time to time. We will notify users of any material changes by posting the new policy on this page and updating the "last updated" date. We encourage you to review this privacy policy periodically to stay informed about how we protect your information.</p>
+            
+            <p className="mt-10 text-slate-500 italic">Last updated: January 2026</p>
           </ContentSection>
         </div>
       );
       case 'terms': return (
         <div className="w-full max-w-5xl animate-reveal px-8 mx-auto pt-32">
           <ContentSection badge="Legal" title="Terms of Service">
-            <p>By accessing the GibberishGone utility, you agree to the following professional terms of use.</p>
+            <p>By accessing the GibberishGone utility, you agree to the following professional terms of use. These terms govern your use of our text restoration service and outline the rights and responsibilities of both parties.</p>
+            
             <h4 className="text-white font-bold mt-10 mb-5 text-xl">1. Provision of Service</h4>
-            <p>The GibberishGone utility is provided <strong>'as-is' for text restoration purposes</strong>. While we strive for 100% deterministic accuracy through our specialized mapping logic, we do not warrant that the results will be flawless for every possible hardware/software configuration.</p>
+            <p>The GibberishGone utility is provided <strong>'as-is' for text restoration purposes</strong>. While we strive for 100% deterministic accuracy through our specialized mapping logic, we do not warrant that the results will be flawless for every possible hardware/software configuration. The service is provided free of charge and is supported through non-intrusive advertising. We reserve the right to modify, suspend, or discontinue the service at any time without prior notice, though we will strive to provide reasonable notice for significant changes.</p>
+            
             <h4 className="text-white font-bold mt-10 mb-5 text-xl">2. User Responsibility</h4>
-            <p>As a local-first, zero-transmission tool, <strong>the user is solely responsible for the output generated by the tool</strong>. GibberishGone shall not be held liable for any damages, errors, or data inaccuracies arising from the subsequent use of restored text in professional or critical environments.</p>
-            <h4 className="text-white font-bold mt-10 mb-5 text-xl">3. Ethical Usage</h4>
-            <p>Users agree to utilize this tool for legitimate input restoration and refrain from any activity intended to interfere with the application's local processing architecture or performance.</p>
+            <p>As a local-first, zero-transmission tool, <strong>the user is solely responsible for the output generated by the tool</strong>. GibberishGone shall not be held liable for any damages, errors, or data inaccuracies arising from the subsequent use of restored text in professional or critical environments. Users are responsible for verifying the accuracy of converted text before using it in important contexts such as legal documents, medical records, financial transactions, or professional communications.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">3. Acceptable Use</h4>
+            <p>Users agree to utilize this tool for legitimate input restoration purposes. Prohibited uses include: attempting to reverse-engineer our mapping algorithms for commercial purposes, using automated scripts to abuse the service, attempting to circumvent any technical measures we implement, or using the service for any illegal purpose. We reserve the right to block access to users who violate these terms.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">4. Intellectual Property</h4>
+            <p>All content, features, and functionality of GibberishGone, including but not limited to text, graphics, website design, code, and mapping algorithms, are owned by GibberishGone and are protected by international copyright, trademark, and other intellectual property laws. Users may not copy, modify, distribute, or create derivative works of our service without explicit written permission.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">5. Limitation of Liability</h4>
+            <p>To the maximum extent permitted by applicable law, GibberishGone shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, use, goodwill, or other intangible losses, resulting from your use of the service. In no event shall our total liability exceed the amount you paid, if any, for accessing the service. Since the service is provided free of charge, our liability is limited to the minimum required by law.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">6. Indemnification</h4>
+            <p>You agree to indemnify and hold harmless GibberishGone, its officers, directors, employees, and agents from any claims, damages, or expenses arising from your use of the service or your violation of these terms. This includes any claims related to the content you process through our service, even though we do not store or transmit that content.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">7. Privacy and Data Protection</h4>
+            <p>Your use of GibberishGone is also governed by our Privacy Policy, which describes how we handle data. By using our service, you consent to our data practices as described in the Privacy Policy. Since we operate on a zero-transmission model, we do not collect your input text, but we may collect minimal analytics data as described in our privacy policy.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">8. Third-Party Links and Services</h4>
+            <p>Our service may contain links to third-party websites or services. We are not responsible for the content, policies, or practices of third-party sites. Your interactions with third-party websites are governed by their terms and conditions. We encourage you to review the privacy policies and terms of service of any third-party sites you visit.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">9. Modifications to Terms</h4>
+            <p>We reserve the right to modify these terms at any time. We will notify users of material changes by posting the updated terms on this page and updating the "last modified" date. Your continued use of the service after such modifications constitutes your acceptance of the new terms. It is your responsibility to review these terms periodically.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">10. Governing Law and Jurisdiction</h4>
+            <p>These terms shall be governed by and construed in accordance with the laws of the jurisdiction in which GibberishGone operates, without regard to its conflict of law provisions. Any disputes arising under these terms shall be subject to the exclusive jurisdiction of the courts located in that jurisdiction.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">11. Severability</h4>
+            <p>If any provision of these terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary so that the remaining terms remain in full force and effect. The failure of either party to exercise any right provided in these terms shall not be deemed a waiver of that right.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">12. Contact Information</h4>
+            <p>If you have any questions about these Terms of Service, please contact us using the information provided in our Support section. We are committed to addressing any concerns you may have about our service or these terms.</p>
+            
+            <p className="mt-10 text-slate-500 italic">Last updated: January 2026</p>
           </ContentSection>
         </div>
       );
@@ -494,16 +582,49 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
       case 'support': return (
         <div className="w-full max-w-5xl animate-reveal px-8 mx-auto pt-32">
           <ContentSection badge="Support" title="Contact Us">
-            <p>For bug reports, feature requests, or questions about supported keyboard layouts, please reach out by email.</p>
+            <p>We're here to help you get the most out of GibberishGone. Whether you've found a bug, have a feature request, or need help with a specific keyboard layout, we want to hear from you.</p>
+            
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">What to Include in Your Message</h4>
+            <p>To help us assist you faster, please include the following information when contacting us:</p>
+            <ul className="space-y-3 text-slate-400 mt-4">
+              <li className="flex items-center gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+                A clear description of the issue or question
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+                The keyboard layouts you were using (source and target)
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+                The text you tried to convert (if it's not sensitive)
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+                Your browser and operating system version
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+                Screenshots if the issue is visual
+              </li>
+            </ul>
+
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">Response Time</h4>
+            <p>We typically respond to all messages within 1-2 business days. For urgent technical issues, please include "URGENT" in your subject line. Feature requests may take longer to evaluate as we prioritize them based on user demand and technical feasibility.</p>
+
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">Before You Contact Us</h4>
+            <p>Many common questions are already answered in our FAQ. Please check there first for immediate answers about privacy, offline use, supported layouts, and more. You might also find helpful information in our Archive section, which contains detailed guides for specific keyboard layouts and typing scenarios.</p>
+
             <div className="mt-16 p-14 rounded-[2.5rem] bg-teal-500/5 border border-teal-500/20 text-center space-y-6">
               <span className="text-[11px] font-black uppercase tracking-[0.5em] text-teal-400/60 block">Email</span>
               <a href="mailto:shoprdo63@gmail.com" className="text-3xl md:text-5xl font-black text-white hover:text-teal-400 transition-all">
                 shoprdo63@gmail.com
               </a>
             </div>
-            <p className="mt-16 text-slate-500 font-light leading-relaxed text-lg">We read every message and aim to respond within a few business days. For faster answers to common questions, please check the FAQ page first.</p>
-            <div className="mt-8">
-              <Link to={`/${sourceLang}/faq`} className="px-8 py-4 rounded-xl border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition-all font-black uppercase tracking-widest text-[11px]">Visit FAQ</Link>
+            
+            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Link to={`/${sourceLang}/faq`} className="px-8 py-4 rounded-xl border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition-all font-black uppercase tracking-widest text-[11px] text-center">Visit FAQ</Link>
+              <Link to={`/${sourceLang}/archive`} className="px-8 py-4 rounded-xl border border-white/10 text-white hover:bg-white/5 transition-all font-black uppercase tracking-widest text-[11px] text-center">Browse Guides</Link>
             </div>
           </ContentSection>
         </div>
