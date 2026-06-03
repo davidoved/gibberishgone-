@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="128" height="128" rx="24" fill="url(#bg)" stroke="rgba(45,212,191,0.3)" stroke-width="2"/>
+  <!-- Glow -->
+  <circle cx="64" cy="64" r="50" fill="url(#glow)"/>
+  <!-- Keyboard keys -->
+  <rect x="22" y="38" width="20" height="20" rx="4" fill="none" stroke="#2dd4bf" stroke-width="2.5" opacity="0.8"/>
+  <rect x="54" y="38" width="20" height="20" rx="4" fill="none" stroke="#2dd4bf" stroke-width="2.5" opacity="0.6"/>
+  <rect x="86" y="38" width="20" height="20" rx="4" fill="none" stroke="#2dd4bf" stroke-width="2.5" opacity="0.8"/>
+  <rect x="22" y="70" width="20" height="20" rx="4" fill="none" stroke="#2dd4bf" stroke-width="2.5" opacity="0.6"/>
+  <rect x="54" y="70" width="20" height="20" rx="4" fill="none" stroke="#2dd4bf" stroke-width="2.5" opacity="1"/>
+  <rect x="86" y="70" width="20" height="20" rx="4" fill="none" stroke="#2dd4bf" stroke-width="2.5" opacity="0.6"/>
+  <!-- Center arrow (conversion) -->
+  <path d="M64 58v12M58 64l6 6 6-6" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

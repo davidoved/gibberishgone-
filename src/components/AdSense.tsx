@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface AdSenseProps {
   adSlot?: string;
@@ -6,33 +6,19 @@ interface AdSenseProps {
 }
 
 const AdSense: React.FC<AdSenseProps> = ({ adSlot = '1234567890', adFormat = 'auto' }) => {
+  const initialized = useRef(false);
+
   useEffect(() => {
-    // Load AdSense script dynamically
-    const script = document.createElement('script');
-    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8446552009469150';
-    script.async = true;
-    script.crossOrigin = 'anonymous';
-    document.head.appendChild(script);
+    if (initialized.current) return;
+    initialized.current = true;
 
-    // Initialize ads after script loads
-    script.onload = () => {
-      try {
-        (globalThis as any).adsbygoogle = (globalThis as any).adsbygoogle || [];
-        (globalThis as any).adsbygoogle.push({});
-      } catch (e) {
-        console.error('AdSense initialization error:', e);
-      }
-    };
-
-    return () => {
-      // Cleanup: remove script when component unmounts
-      const existingScript = document.querySelector(
-        'script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8446552009469150"]'
-      );
-      if (existingScript && document.querySelectorAll('.adsbygoogle').length === 0) {
-        existingScript.remove();
-      }
-    };
+    try {
+      const w = globalThis as any;
+      w.adsbygoogle = w.adsbygoogle || [];
+      w.adsbygoogle.push({});
+    } catch (e) {
+      console.error('AdSense push error:', e);
+    }
   }, []);
 
   return (

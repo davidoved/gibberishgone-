@@ -1,0 +1,212 @@
+export type SupportedLang = 'en' | 'he' | 'ru';
+
+interface UIText {
+  heroTitle: string; heroSubtitle: string;
+  sourceLayout: string; targetLayout: string;
+  swap: string; clear: string; copy: string; copied: string; bufferLive: string; viewProtocol: string;
+  howItWorks: string; howItWorksSubtitle: string;
+  exampleHebrew: string; exampleHebrewDesc: string;
+  exampleRussian: string; exampleRussianDesc: string;
+  examplePrivacy: string; examplePrivacyDesc: string;
+  whyChoose: string; whyChooseSubtitle: string;
+  vsGoogle: string; vsGoogleDesc: string; vsGoogleTag: string;
+  vsAI: string; vsAIDesc: string; vsAITag: string;
+  vsOnline: string; vsOnlineDesc: string; vsOnlineTag: string;
+  bottomLine: string; bottomLineDesc: string;
+  trusted: string; trustedSubtitle: string;
+  layoutsTitle: string; layoutsSubtitle: string;
+  testimonialsTitle: string; testimonialsSubtitle: string;
+  fastPrivateFree: string; fastPrivateFreeDesc: string;
+  archiveTitle: string; archiveSubtitle: string;
+  aboutTitle: string; aboutBadge: string;
+  protocolTitle: string; protocolBadge: string;
+  privacyTitle: string; privacyBadge: string;
+  termsTitle: string; termsBadge: string;
+  faqTitle: string; faqBadge: string;
+  supportTitle: string; supportBadge: string;
+  useCasesTitle: string; useCasesBadge: string;
+  blogTitle: string; blogBadge: string; blogSubtitle: string;
+  explore: string; topicSuggest: string; topicSuggestDesc: string;
+  contact: string; readArticle: string;
+  footerDesc: string; footerAds: string; footerCopy: string;
+  cookieTitle: string; cookieDesc: string; accept: string;
+  breadcrumbHome: string;
+  nav: Record<string, string>;
+}
+
+export const UI: Record<SupportedLang, UIText> = {
+  en: {
+    heroTitle: 'Universal Input Recovery & Layout Fixer',
+    heroSubtitle: 'Instantly restore text typed in the wrong keyboard layout. A secure, local-first solution for a multilingual world.',
+    sourceLayout: 'Source Layout', targetLayout: 'Target Layout',
+    swap: 'Swap', clear: 'Clear', copy: 'Copy', copied: 'Copied!', bufferLive: 'Buffer live', viewProtocol: 'VIEW PROTOCOL SPEC',
+    howItWorks: 'How It Works in Practice',
+    howItWorksSubtitle: 'Select the layout you accidentally typed in, choose the layout you intended, and paste your text. The tool converts it instantly.',
+    exampleHebrew: 'Hebrew Typed in English Layout',
+    exampleHebrewDesc: 'You meant to type Hebrew but your keyboard was set to English. The physical keys you pressed produced Latin characters.',
+    exampleRussian: 'Russian Typed in English Layout',
+    exampleRussianDesc: 'Your keyboard was on English QWERTY, but you intended to type Russian JCUKEN. The result looks like random Latin letters.',
+    examplePrivacy: 'Privacy-Safe Recovery',
+    examplePrivacyDesc: 'Unlike online tools that send your text to servers, our conversion happens entirely in your browser. No data leaves your device.',
+    whyChoose: 'Why Choose GibberishGone',
+    whyChooseSubtitle: 'Unlike translation tools, AI chatbots, or online converters, GibberishGone guarantees accuracy, privacy, and speed.',
+    vsGoogle: 'vs Google Translate',
+    vsGoogleDesc: 'Google Translate guesses the meaning of words. It cannot recover text typed in the wrong layout because it does not know which physical keys were pressed.',
+    vsGoogleTag: 'Deterministic, not guesswork',
+    vsAI: 'vs AI Chatbots',
+    vsAIDesc: 'ChatGPT and Claude are probabilistic. They might guess correctly, or hallucinate something else entirely. They also send your sensitive text to external servers.',
+    vsAITag: 'Zero hallucination risk',
+    vsOnline: 'vs Online Converters',
+    vsOnlineDesc: 'Most online tools upload your text to a server. That means passwords, medical records, and legal documents travel across the internet. GibberishGone runs entirely in your browser.',
+    vsOnlineTag: '100% client-side processing',
+    bottomLine: 'The Bottom Line',
+    bottomLineDesc: 'If you need to recover text typed in the wrong keyboard layout, you need a tool that understands how keyboards work — not a translator, not an AI, and not a cloud service.',
+    trusted: 'Trusted Worldwide',
+    trustedSubtitle: 'Professionals across industries rely on GibberishGone for fast, accurate, and private text recovery.',
+    layoutsTitle: 'Layouts We Support',
+    layoutsSubtitle: 'A small sample of the 80+ keyboard layouts available for instant conversion.',
+    testimonialsTitle: 'What Users Say',
+    testimonialsSubtitle: 'Real feedback from professionals who use GibberishGone every day.',
+    fastPrivateFree: 'Fast. Private. Free.',
+    fastPrivateFreeDesc: 'A simple tool for a common problem. No signup, no cloud processing, no limits.',
+    archiveTitle: 'The Archive.',
+    archiveSubtitle: 'Practical guides and references for multilingual typists.',
+    aboutTitle: 'What Is GibberishGone?', aboutBadge: 'About',
+    protocolTitle: 'Deterministic Spec', protocolBadge: 'The Protocol',
+    privacyTitle: 'Privacy Policy', privacyBadge: 'Legal',
+    termsTitle: 'Terms of Service', termsBadge: 'Legal',
+    faqTitle: 'Frequently Asked Questions', faqBadge: 'FAQ',
+    supportTitle: 'Contact Us', supportBadge: 'Support',
+    useCasesTitle: 'Real-World Use Cases', useCasesBadge: 'Applications',
+    blogTitle: 'The Blog.', blogBadge: 'Knowledge Base',
+    blogSubtitle: 'Expert guides, technical deep-dives, and practical advice for multilingual typists, developers, and professionals worldwide.',
+    explore: 'Explore More Resources',
+    topicSuggest: 'Have a topic suggestion?',
+    topicSuggestDesc: 'We welcome ideas from our community.',
+    contact: 'Contact Us', readArticle: 'Read Article',
+    footerDesc: 'GibberishGone is a high-performance utility for digital input management. We maintain local, zero-transmission processing and purge all buffers upon session termination.',
+    footerAds: 'This website displays advertisements served by Google AdSense to support our free service. We do not endorse any advertised products or services.',
+    footerCopy: '\u00a9 2026 GIBBERISHGONE // UNIVERSAL INPUT UTILITY',
+    cookieTitle: 'We value your privacy.',
+    cookieDesc: 'This website uses cookies and similar technologies, including Google AdSense cookies for personalized advertising. By clicking "Accept", you consent to the use of cookies as described in our Privacy Policy.',
+    accept: 'Accept All',
+    breadcrumbHome: 'Home',
+    nav: { converter: 'Utility', 'use-cases': 'Use Cases', knowledge: 'Archive', blog: 'Blog', faq: 'FAQ', about: 'Manifesto', 'how-it-works': 'Protocol' },
+  },
+  he: {
+    heroTitle: 'שחזור טקסט ותיקון פריסת מקלדת',
+    heroSubtitle: 'שחזרו מיד טקסט שהוקלד בפריסת מקלדת שגויה. פתרון מאובטח ומקומי לעולם רב-לשוני.',
+    sourceLayout: 'פריסת מקור', targetLayout: 'פריסת יעד',
+    swap: 'החלף', clear: 'נקה', copy: 'העתק', copied: 'הועתק!', bufferLive: 'חי', viewProtocol: 'צפה בפרוטוקול',
+    howItWorks: 'איך זה עובד בפועל',
+    howItWorksSubtitle: 'בחרו את הפריסה שהקלדתם בה בטעות, בחרו את הפריסה הרצויה, והדביקו את הטקסט. הכלי ממיר אותו מיד.',
+    exampleHebrew: 'עברית שהוקלדה בפריסת אנגלית',
+    exampleHebrewDesc: 'רציתם להקליד עברית אבל המקלדת הוגדרה לאנגלית. המקשים הפיזיים שפגעתם בהם הפיקו תווים לטיניים.',
+    exampleRussian: 'רוסית שהוקלדה בפריסת אנגלית',
+    exampleRussianDesc: 'המקלדת הוגדרה לאנגלית QWERTY, אבל רציתם להקליד רוסית JCUKEN. התוצאה נראית כמו אותיות לטיניות אקראיות.',
+    examplePrivacy: 'שחזור שומר פרטיות',
+    examplePrivacyDesc: 'בניגוד לכלים מקוונים ששולחים את הטקסט לשרתים, ההמרה שלנו מתרחשת לחלוטין בדפדפן. שום נתון לא עוזב את המכשיר.',
+    whyChoose: 'למה GibberishGone?',
+    whyChooseSubtitle: 'בניגוד לכלי תרגום, בוטי צ\'אט AI, או ממירים מקוונים, GibberishGone מבטיח דיוק, פרטיות ומהירות.',
+    vsGoogle: 'לעומת Google Translate',
+    vsGoogleDesc: 'Google Translate מנחש את משמעות המילים. הוא אינו יכול לשחזר טקסט שהוקלד בפריסה שגויה כי אינו יודע אילו מקשים נלחצו.',
+    vsGoogleTag: 'דטרמיניסטי, לא ניחוש',
+    vsAI: 'לעומת בוטי צ\'אט AI',
+    vsAIDesc: 'ChatGPT ו-Claude הם הסתברותיים. הם עשויים לנחש נכון או לדמיין משהו אחר לגמרי. הם גם שולחים את הטקסט הרגיש לשרתים חיצוניים.',
+    vsAITag: 'אפס סיכון הזיות',
+    vsOnline: 'לעומת ממירים מקוונים',
+    vsOnlineDesc: 'רוב הכלים המקוונים מעלים את הטקסט לשרת. זה אומר שסיסמאות, רשומות רפואיות ומסמכים משפטיים נוסעים ברשת. GibberishGone רץ לחלוטין בדפדפן.',
+    vsOnlineTag: '100% עיבוד בצד לקוח',
+    bottomLine: 'המסקנה',
+    bottomLineDesc: 'אם אתם צריכים לשחזר טקסט שהוקלד בפריסת מקלדת שגויה, אתם צריכים כלי שמבין איך מקלדות עובדות — לא מתרגם, לא AI, ולא שירות ענן.',
+    trusted: 'אמין ברחבי העולם',
+    trustedSubtitle: 'אנשי מקצוע במגוון תעשיות נשענים על GibberishGone לשחזור טקסט מהיר, מדויק ופרטי.',
+    layoutsTitle: 'פריסות שאנו תומכים בהן',
+    layoutsSubtitle: 'דוגמא מתוך 80+ פריסות מקלדת זמינות להמרה מיידית.',
+    testimonialsTitle: 'מה המשתמשים אומרים',
+    testimonialsSubtitle: 'משוב אמיתי מאנשי מקצוע שמשתמשים ב-GibberishGone כל יום.',
+    fastPrivateFree: 'מהיר. פרטי. בחינם.',
+    fastPrivateFreeDesc: 'כלי פשוט לבעיה נפוצה. ללא הרשמה, ללא עיבוד ענן, ללא מגבלות.',
+    archiveTitle: 'הארכיון.',
+    archiveSubtitle: 'מדריכים מעשיים והפניות למקלידים רב-לשוניים.',
+    aboutTitle: 'מהו GibberishGone?', aboutBadge: 'אודות',
+    protocolTitle: 'מפרט דטרמיניסטי', protocolBadge: 'הפרוטוקול',
+    privacyTitle: 'מדיניות פרטיות', privacyBadge: 'משפטי',
+    termsTitle: 'תנאי שימוש', termsBadge: 'משפטי',
+    faqTitle: 'שאלות נפוצות', faqBadge: 'שאלות נפוצות',
+    supportTitle: 'צור קשר', supportBadge: 'תמיכה',
+    useCasesTitle: 'תרחישי שימוש בעולם האמיתי', useCasesBadge: 'יישומים',
+    blogTitle: 'הבלוג.', blogBadge: 'בסיס ידע',
+    blogSubtitle: 'מדריכי מומחים, עיונים טכניים מעמיקים, ועצות מעשיות למקלידים רב-לשוניים, מפתחים, ואנשי מקצוע ברחבי העולם.',
+    explore: 'חקור משאבים נוספים',
+    topicSuggest: 'יש לכם הצעה לנושא?',
+    topicSuggestDesc: 'אנו מברכים על רעיונות מהקהילה שלנו.',
+    contact: 'צור קשר', readArticle: 'קרא מאמר',
+    footerDesc: 'GibberishGone הוא כלי ביצועים גבוה לניהול קלט דיגיטלי. אנו שומרים על עיבוד מקומי ללא העברה ומנקים את כל הבאפרים עם סיום הסשן.',
+    footerAds: 'אתר זה מציג פרסומות המוגשות על ידי Google AdSense. איננו ממליצים על מוצרים או שירותים מפורסמים.',
+    footerCopy: '\u00a9 2026 GIBBERISHGONE // כלי שחזור קלט אוניברסלי',
+    cookieTitle: 'אנו מעריכים את הפרטיות שלכם.',
+    cookieDesc: 'אתר זה משתמש בעוגיות וטכנולוגיות דומות, כולל עוגיות של Google AdSense לפרסום מותאם אישית. בלחיצה על "קבל", אתם מסכימים לשימוש בעוגיות כמתואר במדיניות הפרטיות שלנו.',
+    accept: 'קבל הכל',
+    breadcrumbHome: 'בית',
+    nav: { converter: 'הכלי', 'use-cases': 'תרחישי שימוש', knowledge: 'ארכיון', blog: 'בלוג', faq: 'שאלות נפוצות', about: 'אודות', 'how-it-works': 'איך זה עובד' },
+  },
+  ru: {
+    heroTitle: 'Восстановление текста и исправление раскладки',
+    heroSubtitle: 'Мгновенно восстанавливайте текст, набранный в неправильной раскладке клавиатуры. Безопасное локальное решение для многоязычного мира.',
+    sourceLayout: 'Исходная раскладка', targetLayout: 'Целевая раскладка',
+    swap: 'Поменять', clear: 'Очистить', copy: 'Копировать', copied: 'Скопировано!', bufferLive: 'В реальном времени', viewProtocol: 'ПРОСМОТР ПРОТОКОЛА',
+    howItWorks: 'Как это работает на практике',
+    howItWorksSubtitle: 'Выберите раскладку, в которой вы случайно набрали текст, выберите нужную раскладку и вставьте текст. Инструмент мгновенно преобразует его.',
+    exampleHebrew: 'Иврит, набранный на английской раскладке',
+    exampleHebrewDesc: 'Вы хотели набрать иврит, но клавиатура была настроена на английский. Физические клавиши, которые вы нажали, произвели латинские символы.',
+    exampleRussian: 'Русский, набранный на английской раскладке',
+    exampleRussianDesc: 'Ваша клавиатура была на английской QWERTY, но вы хотели набрать русскую ЙЦУКЕН. Результат выглядит как случайные латинские буквы.',
+    examplePrivacy: 'Безопасное восстановление',
+    examplePrivacyDesc: 'В отличие от онлайн-инструментов, которые отправляют ваш текст на серверы, наше преобразование происходит полностью в вашем браузере. Никакие данные не покидают ваше устройство.',
+    whyChoose: 'Почему GibberishGone?',
+    whyChooseSubtitle: 'В отличие от инструментов перевода, чат-ботов AI или онлайн-конвертеров, GibberishGone гарантирует точность, конфиденциальность и скорость.',
+    vsGoogle: 'vs Google Translate',
+    vsGoogleDesc: 'Google Translate угадывает значение слов. Он не может восстановить текст, набранный в неправильной раскладке, потому что не знает, какие физические клавиши были нажаты.',
+    vsGoogleTag: 'Детерминировано, не догадка',
+    vsAI: 'vs чат-боты AI',
+    vsAIDesc: 'ChatGPT и Claude работают вероятностно. Они могут угадать правильно или полностью выдумать что-то другое. Они также отправляют ваш конфиденциальный текст на внешние серверы.',
+    vsAITag: 'Нулевой риск галлюцинаций',
+    vsOnline: 'vs онлайн-конвертеры',
+    vsOnlineDesc: 'Большинство онлайн-инструментов загружают ваш текст на сервер. Это означает, что пароли, медицинские записи и юридические документы путешествуют через интернет. GibberishGone работает полностью в вашем браузере.',
+    vsOnlineTag: '100% клиентская обработка',
+    bottomLine: 'Итог',
+    bottomLineDesc: 'Если вам нужно восстановить текст, набранный в неправильной раскладке клавиатуры, вам нужен инструмент, который понимает, как работают клавиатуры — не переводчик, не AI и не облачный сервис.',
+    trusted: 'Надежность по всему миру',
+    trustedSubtitle: 'Профессионалы в различных отраслях полагаются на GibberishGone для быстрого, точного и конфиденциального восстановления текста.',
+    layoutsTitle: 'Поддерживаемые раскладки',
+    layoutsSubtitle: 'Небольшая выборка из 80+ доступных раскладок клавиатуры для мгновенного преобразования.',
+    testimonialsTitle: 'Что говорят пользователи',
+    testimonialsSubtitle: 'Реальные отзывы профессионалов, которые используют GibberishGone каждый день.',
+    fastPrivateFree: 'Быстро. Конфиденциально. Бесплатно.',
+    fastPrivateFreeDesc: 'Простой инструмент для распространенной проблемы. Без регистрации, без облачной обработки, без ограничений.',
+    archiveTitle: 'Архив.',
+    archiveSubtitle: 'Практические руководства и справочники для многоязычных типистов.',
+    aboutTitle: 'Что такое GibberishGone?', aboutBadge: 'О нас',
+    protocolTitle: 'Детерминированная спецификация', protocolBadge: 'Протокол',
+    privacyTitle: 'Политика конфиденциальности', privacyBadge: 'Юридический',
+    termsTitle: 'Условия использования', termsBadge: 'Юридический',
+    faqTitle: 'Часто задаваемые вопросы', faqBadge: 'FAQ',
+    supportTitle: 'Свяжитесь с нами', supportBadge: 'Поддержка',
+    useCasesTitle: 'Реальные сценарии использования', useCasesBadge: 'Применения',
+    blogTitle: 'Блог.', blogBadge: 'База знаний',
+    blogSubtitle: 'Экспертные руководства, технические подробности и практические советы для многоязычных типистов, разработчиков и профессионалов по всему миру.',
+    explore: 'Изучите дополнительные ресурсы',
+    topicSuggest: 'Есть предложение по теме?',
+    topicSuggestDesc: 'Мы приветствуем идеи от нашего сообщества.',
+    contact: 'Свяжитесь с нами', readArticle: 'Читать статью',
+    footerDesc: 'GibberishGone — это высокопроизводительная утилита для управления цифровым вводом. Мы поддерживаем локальную обработку без передачи данных и очищаем все буферы по окончании сеанса.',
+    footerAds: 'Этот веб-сайт показывает рекламу, предоставляемую Google AdSense. Мы не одобряем рекламируемые продукты или услуги.',
+    footerCopy: '\u00a9 2026 GIBBERISHGONE // УНИВЕРСАЛЬНАЯ УТИЛИТА ВВОДА',
+    cookieTitle: 'Мы ценим вашу конфиденциальность.',
+    cookieDesc: 'Этот веб-сайт использует файлы cookie и аналогичные технологии, включая файлы cookie Google AdSense для персонализированной рекламы. Нажимая "Принять", вы соглашаетесь на использование файлов cookie в соответствии с нашей Политикой конфиденциальности.',
+    accept: 'Принять все',
+    breadcrumbHome: 'Главная',
+    nav: { converter: 'Инструмент', 'use-cases': 'Сценарии', knowledge: 'Архив', blog: 'Блог', faq: 'Вопросы', about: 'О нас', 'how-it-works': 'Принцип работы' },
+  },
+};

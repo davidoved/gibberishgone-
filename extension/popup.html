@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GibberishGone</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="popup-header">
+      <a href="https://gibberishgone.vercel.app/en/utility" target="_blank" class="site-link" title="Open Website">&#8599;</a>
+    </header>
+
+    <!-- Hero Title -->
+    <div class="hero">
+      <h1 class="hero-title">Universal Input Recovery <span class="hero-amp">&</span> Layout Fixer</h1>
+      <p class="hero-subtitle">Instantly restore text typed in the wrong keyboard layout.</p>
+    </div>
+
+    <!-- Language Selectors -->
+    <div class="lang-row">
+      <div class="lang-group">
+        <span class="lang-label">Source Layout</span>
+        <div class="custom-select" id="sourceLangWrap">
+          <button class="custom-select-trigger" id="sourceLangTrigger" data-value="ru">
+            <span class="custom-select-text">Russian (ЙЦУКЕН)</span>
+            <svg class="custom-select-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="custom-select-options">
+            <div class="custom-option" data-value="he">Hebrew (SI-1452)</div>
+            <div class="custom-option selected" data-value="ru">Russian (ЙЦУКЕН)</div>
+            <div class="custom-option" data-value="ar">Arabic (101)</div>
+            <div class="custom-option" data-value="en">English (QWERTY)</div>
+            <div class="custom-option" data-value="gr">Greek</div>
+            <div class="custom-option" data-value="fr">French (AZERTY)</div>
+            <div class="custom-option" data-value="de">German (QWERTZ)</div>
+            <div class="custom-option" data-value="ko">Korean</div>
+            <div class="custom-option" data-value="ja">Japanese</div>
+            <div class="custom-option" data-value="th">Thai</div>
+            <div class="custom-option" data-value="tr">Turkish</div>
+            <div class="custom-option" data-value="pl">Polish</div>
+            <div class="custom-option" data-value="cs">Czech</div>
+            <div class="custom-option" data-value="hu">Hungarian</div>
+            <div class="custom-option" data-value="vi">Vietnamese</div>
+            <div class="custom-option" data-value="mt">Maltese</div>
+            <div class="custom-option" data-value="am">Amharic</div>
+            <div class="custom-option" data-value="hi">Hindi</div>
+            <div class="custom-option" data-value="bn">Bengali</div>
+            <div class="custom-option" data-value="lt">Lithuanian</div>
+          </div>
+        </div>
+      </div>
+
+      <button id="swapBtn" class="swap-btn" title="Swap layouts">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 16V4M7 4L3 8M7 4l4 4"/>
+          <path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
+        </svg>
+      </button>
+
+      <div class="lang-group">
+        <span class="lang-label">Target Layout</span>
+        <div class="custom-select" id="targetLangWrap">
+          <button class="custom-select-trigger" id="targetLangTrigger" data-value="he">
+            <span class="custom-select-text">Hebrew (SI-1452)</span>
+            <svg class="custom-select-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="custom-select-options">
+            <div class="custom-option selected" data-value="he">Hebrew (SI-1452)</div>
+            <div class="custom-option" data-value="ru">Russian (ЙЦУКЕН)</div>
+            <div class="custom-option" data-value="ar">Arabic (101)</div>
+            <div class="custom-option" data-value="en">English (QWERTY)</div>
+            <div class="custom-option" data-value="gr">Greek</div>
+            <div class="custom-option" data-value="fr">French (AZERTY)</div>
+            <div class="custom-option" data-value="de">German (QWERTZ)</div>
+            <div class="custom-option" data-value="ko">Korean</div>
+            <div class="custom-option" data-value="ja">Japanese</div>
+            <div class="custom-option" data-value="th">Thai</div>
+            <div class="custom-option" data-value="tr">Turkish</div>
+            <div class="custom-option" data-value="pl">Polish</div>
+            <div class="custom-option" data-value="cs">Czech</div>
+            <div class="custom-option" data-value="hu">Hungarian</div>
+            <div class="custom-option" data-value="vi">Vietnamese</div>
+            <div class="custom-option" data-value="mt">Maltese</div>
+            <div class="custom-option" data-value="am">Amharic</div>
+            <div class="custom-option" data-value="hi">Hindi</div>
+            <div class="custom-option" data-value="bn">Bengali</div>
+            <div class="custom-option" data-value="lt">Lithuanian</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Panel -->
+    <div class="glass-panel input-panel">
+      <div class="absolute-glow"></div>
+      <label class="panel-label">
+        <span class="pulse-dot"></span>
+        Input Matrix
+      </label>
+      <textarea id="input" class="panel-textarea" placeholder="Type in wrong layout to fix" spellcheck="false" autofocus></textarea>
+      <div class="panel-footer">
+        <span class="footer-meta">Buffer live</span>
+        <button id="clearBtn" class="footer-action">Clear Input</button>
+      </div>
+    </div>
+
+    <!-- Output Panel -->
+    <div class="glass-panel output-panel">
+      <div class="absolute-glow"></div>
+      <label class="panel-label output-label">
+        Restored Sequence
+        <span class="pulse-dot bright"></span>
+      </label>
+      <textarea id="output" class="panel-textarea output-textarea" placeholder="Analyzing stream..." readonly spellcheck="false"></textarea>
+      <button id="copyBtn" class="copy-btn" title="Copy to clipboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copy Restoration
+      </button>
+    </div>
+
+    <!-- Examples -->
+    <div class="examples">
+      <button class="example-chip" data-text="akuo dksc" data-from="en" data-to="he">Hebrew</button>
+      <button class="example-chip" data-text="rjvgtyn" data-from="en" data-to="ru">Russian</button>
+      <button class="example-chip" data-text=";/,ujpvt" data-from="en" data-to="he">Reverse</button>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <div class="status-item">
+        <span class="status-dot"></span>
+        <span class="status-text">Client-side only</span>
+      </div>
+      <div class="status-item">
+        <span class="status-dot green"></span>
+        <span class="status-text">80+ layouts</span>
+      </div>
+      <div class="status-item">
+        <span class="status-dot blue"></span>
+        <span class="status-text">Zero network</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>100% local processing</span>
+      <a href="https://gibberishgone.vercel.app/en/utility" target="_blank">gibberishgone.com</a>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast">Copied to clipboard!</div>
+  <script src="popup.js"></script>
+</body>
+</html>

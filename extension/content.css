@@ -1,0 +1,97 @@
+/* GibberishGone Content Script Styles */
+
+.gg-toast {
+  position: fixed !important;
+  bottom: 24px !important;
+  left: 50% !important;
+  transform: translateX(-50%) translateY(80px) !important;
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  background: #020617 !important;
+  border: 1px solid rgba(45, 212, 191, 0.3) !important;
+  color: #2dd4bf !important;
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  z-index: 2147483647 !important;
+  opacity: 0 !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  pointer-events: none !important;
+  box-shadow: 0 8px 32px rgba(45, 212, 191, 0.15), 0 0 0 1px rgba(45, 212, 191, 0.1) !important;
+  white-space: nowrap !important;
+  max-width: 90vw !important;
+}
+
+.gg-toast.show {
+  transform: translateX(-50%) translateY(0) !important;
+  opacity: 1 !important;
+}
+
+.gg-toast-fixed {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  padding: 14px 20px !important;
+  border-radius: 12px !important;
+  background: #020617 !important;
+  border: 1px solid rgba(45, 212, 191, 0.3) !important;
+  color: #f8fafc !important;
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 13px !important;
+  z-index: 2147483646 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  animation: gg-slide-in 0.3s ease !important;
+}
+
+.gg-toast-fixed button {
+  padding: 6px 14px !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(45, 212, 191, 0.4) !important;
+  background: rgba(45, 212, 191, 0.1) !important;
+  color: #2dd4bf !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+  pointer-events: auto !important;
+}
+
+.gg-toast-fixed button:hover {
+  background: rgba(45, 212, 191, 0.2) !important;
+}
+
+.gg-toast-fixed .gg-close {
+  background: transparent !important;
+  border: none !important;
+  color: #64748b !important;
+  font-size: 16px !important;
+  padding: 4px !important;
+  margin-left: 4px !important;
+}
+
+.gg-toast-fixed .gg-close:hover {
+  color: #f8fafc !important;
+}
+
+@keyframes gg-slide-in {
+  from { transform: translateX(100px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes gg-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Highlight animation for fixed text */
+@keyframes gg-highlight {
+  0% { background-color: rgba(45, 212, 191, 0.3); }
+  100% { background-color: transparent; }
+}
+
+.gg-highlight {
+  animation: gg-highlight 1.5s ease !important;
+}

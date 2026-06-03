@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GibberishGone Settings</title>
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-panel: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.08);
+      --text: #f8fafc;
+      --text-secondary: #94a3b8;
+      --teal: #2dd4bf;
+      --teal-dim: rgba(45,212,191,0.15);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 40px 24px;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 560px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .header svg { width: 32px; height: 32px; }
+    .header h1 { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+    .header span { color: var(--teal); }
+
+    .card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--teal);
+      margin-bottom: 20px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .field:last-child { margin-bottom: 0; }
+    .field label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .field select {
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.3);
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    .field select:hover { border-color: rgba(45,212,191,0.3); }
+    .field select:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-dim); }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+    }
+    .checkbox-row input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--teal);
+      cursor: pointer;
+    }
+    .checkbox-row label {
+      font-size: 14px;
+      color: var(--text);
+      cursor: pointer;
+      user-select: none;
+    }
+    .checkbox-row .hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .shortcuts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .shortcut-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .shortcut-row:last-child { border-bottom: none; }
+    .shortcut-name { font-size: 14px; color: var(--text); }
+    .shortcut-keys {
+      display: flex;
+      gap: 4px;
+    }
+    .key {
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--teal);
+    }
+
+    .save-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(45,212,191,0.3);
+      background: var(--teal-dim);
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+    .save-btn:hover {
+      background: rgba(45,212,191,0.2);
+    }
+    .save-btn.saved {
+      background: rgba(52,211,153,0.15);
+      color: #34d399;
+      border-color: rgba(52,211,153,0.3);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .footer a { color: var(--teal); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="#2dd4bf" stroke-width="2" fill="none"/>
+        <path d="M7 12h10M12 7v10" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <h1>GIBBERISH<span>GONE</span> Settings</h1>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Default Layouts</div>
+      <div class="field">
+        <label for="defaultSource">Default Source Layout (what you accidentally typed)</label>
+        <select id="defaultSource">
+          <option value="he">Hebrew (SI-1452)</option>
+          <option value="ru" selected>Russian (ЙЦУКЕН)</option>
+          <option value="ar">Arabic (101)</option>
+          <option value="en">English (QWERTY)</option>
+          <option value="gr">Greek</option>
+          <option value="fr">French (AZERTY)</option>
+          <option value="de">German (QWERTZ)</option>
+          <option value="ko">Korean</option>
+          <option value="ja">Japanese</option>
+          <option value="th">Thai</option>
+          <option value="tr">Turkish</option>
+          <option value="pl">Polish</option>
+          <option value="cs">Czech</option>
+          <option value="hu">Hungarian</option>
+          <option value="vi">Vietnamese</option>
+          <option value="mt">Maltese</option>
+          <option value="am">Amharic</option>
+          <option value="hi">Hindi</option>
+          <option value="bn">Bengali</option>
+          <option value="lt">Lithuanian</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="defaultTarget">Default Target Layout (what you intended)</label>
+        <select id="defaultTarget">
+          <option value="en" selected>English (QWERTY)</option>
+          <option value="he">Hebrew (SI-1452)</option>
+          <option value="ru">Russian (ЙЦУКЕН)</option>
+          <option value="ar">Arabic (101)</option>
+          <option value="gr">Greek</option>
+          <option value="fr">French (AZERTY)</option>
+          <option value="de">German (QWERTZ)</option>
+          <option value="ko">Korean</option>
+          <option value="ja">Japanese</option>
+          <option value="th">Thai</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Behavior</div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="autoCopy" checked>
+        <div>
+          <label for="autoCopy">Auto-copy fixed text to clipboard</label>
+          <div class="hint">Automatically copy the converted text after fixing</div>
+        </div>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="showToast" checked>
+        <div>
+          <label for="showToast">Show confirmation toast</label>
+          <div class="hint">Display a brief notification after fixing text</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Keyboard Shortcuts</div>
+      <div class="shortcuts-list">
+        <div class="shortcut-row">
+          <span class="shortcut-name">Open extension popup</span>
+          <div class="shortcut-keys"><span class="key">Alt</span><span class="key">Shift</span><span class="key">G</span></div>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-name">Fix selected text (auto-detect)</span>
+          <div class="shortcut-keys"><span class="key">Alt</span><span class="key">Shift</span><span class="key">F</span></div>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-name">Fix focused input (double-tap)</span>
+          <div class="shortcut-keys"><span class="key">Ctrl</span><span class="key">Ctrl</span></div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--text-secondary);margin-top:12px;">
+        You can customize shortcuts in your browser's extension keyboard settings.
+      </p>
+    </div>
+
+    <button id="saveBtn" class="save-btn">Save Settings</button>
+
+    <div class="footer">
+      GibberishGone v1.1.0 — <a href="https://gibberishgone.com" target="_blank">gibberishgone.com</a><br>
+      100% client-side. Zero data transmission.
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

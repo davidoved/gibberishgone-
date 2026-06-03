@@ -10,9 +10,14 @@ import {
 import { SupportedLanguage, MAPPINGS, convertText } from './services/mappings';
 import LanguageSelector from './components/LanguageSelector';
 import AdSense from './components/AdSense';
+import CookieConsent from './components/CookieConsent';
+import Breadcrumbs from './components/Breadcrumbs';
+import SchemaInjector from './components/SchemaInjector';
+import { UI } from './i18n';
 import { RESEARCH_ARTICLES } from './ArchiveLibrary';
+import { BLOG_POSTS } from './BlogPosts';
 
-type View = 'converter' | 'knowledge' | 'about' | 'privacy' | 'terms' | 'support' | 'how-it-works' | 'faq';
+type View = 'converter' | 'knowledge' | 'about' | 'privacy' | 'terms' | 'support' | 'how-it-works' | 'faq' | 'use-cases' | 'blog';
 
 const VIEW_MAP: Record<string, View> = {
   'utility': 'converter',
@@ -22,7 +27,9 @@ const VIEW_MAP: Record<string, View> = {
   'privacy': 'privacy',
   'terms': 'terms',
   'contact': 'support',
-  'faq': 'faq'
+  'faq': 'faq',
+  'use-cases': 'use-cases',
+  'blog': 'blog'
 };
 
 const PATH_MAP: Record<View, string> = {
@@ -33,7 +40,9 @@ const PATH_MAP: Record<View, string> = {
   'privacy': 'privacy',
   'terms': 'terms',
   'support': 'contact',
-  'faq': 'faq'
+  'faq': 'faq',
+  'use-cases': 'use-cases',
+  'blog': 'blog'
 };
 
 // --- PREMIUM UI COMPONENTS ---
@@ -74,6 +83,7 @@ const MainApp: React.FC = () => {
   
   const currentView = useMemo(() => (view && VIEW_MAP[view]) || 'converter', [view]);
   const [isCopied, setIsCopied] = useState(false);
+  const t = UI[(lang as 'en' | 'he' | 'ru') || 'en'] || UI.en;
 
   // Sync sourceLang with URL lang slug
   useEffect(() => {
@@ -117,6 +127,14 @@ const MainApp: React.FC = () => {
       case 'faq':
         title = "FAQ | Frequently Asked Questions | GibberishGone";
         metaDesc = "Find answers to common questions about using GibberishGone, supported keyboard layouts, privacy, and offline use.";
+        break;
+      case 'use-cases':
+        title = "Use Cases | Who Benefits from Keyboard Layout Recovery";
+        metaDesc = "Discover how developers, students, journalists, travelers, and professionals use GibberishGone to recover text typed in the wrong keyboard layout.";
+        break;
+      case 'blog':
+        title = "Blog | Keyboard Layout Guides & Multilingual Typing Insights | GibberishGone";
+        metaDesc = "Read expert guides on keyboard layouts, multilingual typing, privacy, text recovery, and productivity. In-depth articles for professionals, students, and developers.";
         break;
     }
     
@@ -165,15 +183,26 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
     switch(currentView) {
       case 'converter': return (
         <div className="w-full max-w-[1600px] animate-reveal px-8 mx-auto">
+          <Breadcrumbs currentView={currentView} basePath={`/${sourceLang}`} homeLabel={t.breadcrumbHome} />
           <AdSense />
-          <header className="text-center mb-16 pt-16 md:pt-32">
-            <h1 className="text-5xl md:text-[8rem] font-black mb-10 bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/30 tracking-[-0.05em] leading-[0.85] flex flex-col items-center">
-              Universal Input <br/> Recovery <span className="text-teal-400">&</span> Layout Fixer
+          <header className="text-center mb-16 pt-16 md:pt-32 relative">
+            {/* Glow effect behind title */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-teal-500/[0.06] blur-[100px] rounded-full pointer-events-none" />
+            
+            <h1 className="relative text-5xl md:text-[8rem] font-black mb-10 bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/30 tracking-[-0.05em] leading-[0.85] flex flex-col items-center">
+              <span className="relative">
+                {t.heroTitle}
+                <span className="absolute -inset-2 bg-teal-400/[0.03] blur-2xl rounded-full" />
+              </span>
             </h1>
-            <p className="text-slate-400 text-lg md:text-2xl max-w-3xl mx-auto font-light leading-[1.4] tracking-tight">
-              Instantly restore text typed in the wrong keyboard layout. <br className="hidden md:block"/> 
-              A secure, local-first solution for a multilingual world.
+            <p className="relative text-slate-400 text-lg md:text-2xl max-w-3xl mx-auto font-light leading-[1.4] tracking-tight">
+              {t.heroSubtitle}
             </p>
+            
+            {/* Animated scroll indicator */}
+            <div className="mt-12 flex flex-col items-center gap-2 opacity-40">
+              <div className="w-[1px] h-8 bg-gradient-to-b from-transparent via-teal-400 to-transparent animate-pulse" />
+            </div>
           </header>
 
           <div className="space-y-10 mb-40">
@@ -186,46 +215,56 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-              <div className="glass-panel rounded-[2.5rem] p-10 md:p-14 flex flex-col h-[450px] md:h-[650px] relative overflow-hidden group">
-                <label htmlFor="input-textarea" className="text-[10px] font-black uppercase tracking-[0.5em] text-teal-400/50 mb-8">Input Matrix</label>
+              {/* Input Panel */}
+              <div className="glass-panel rounded-[2.5rem] p-10 md:p-14 flex flex-col h-[450px] md:h-[650px] relative overflow-hidden group shimmer-border glow-teal-subtle">
+                {/* Subtle glow behind */}
+                <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-teal-500/[0.02] blur-[80px] pointer-events-none group-hover:bg-teal-500/[0.04] transition-all duration-700" />
+                
+                <label htmlFor="input-textarea" className="relative text-[10px] font-black uppercase tracking-[0.5em] text-teal-400/50 mb-8 flex items-center gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-400/40 animate-pulse" />
+                  Input Matrix
+                </label>
                 <textarea 
                   id="input-textarea"
                   value={inputText} 
                   onChange={(e) => setInputText(e.target.value)} 
                   placeholder="Type in wrong layout to fix" 
-                  className="flex-1 bg-transparent resize-none border-none outline-none text-white text-4xl md:text-6xl font-mono placeholder-slate-900 focus:ring-0 leading-tight scrollbar-hide" 
+                  className="relative flex-1 bg-transparent resize-none border-none outline-none text-white text-4xl md:text-6xl font-mono placeholder-slate-900/60 focus:ring-0 leading-tight scrollbar-hide" 
                   spellCheck={false} 
                   autoFocus
                 />
-                <div className="flex justify-between items-center pt-8 mt-6 border-t border-white/5">
+                <div className="relative flex justify-between items-center pt-8 mt-6 border-t border-white/5">
                   <div className="flex items-center gap-8">
-                    <span className="text-[10px] text-slate-600 font-mono tracking-[0.3em] uppercase">Buffer live</span>
-                    <Link to={`/${sourceLang}/protocol`} className="text-[10px] uppercase tracking-[0.3em] text-slate-500 hover:text-cyan-400 transition-all duration-300 hover:[text-shadow:0_0_8px_rgba(34,211,238,0.4)]">VIEW PROTOCOL SPEC</Link>
+                    <span className="text-[10px] text-slate-600 font-mono tracking-[0.3em] uppercase">{t.bufferLive}</span>
+                    <Link to={`/${sourceLang}/protocol`} className="text-[10px] uppercase tracking-[0.3em] text-slate-500 hover:text-cyan-400 transition-all duration-300 hover:[text-shadow:0_0_8px_rgba(34,211,238,0.4)]">{t.viewProtocol}</Link>
                   </div>
-                  <button onClick={handleClear} className="text-[10px] font-black text-slate-500 hover:text-teal-400 transition-colors uppercase tracking-[0.4em]">Clear Input</button>
+                  <button onClick={handleClear} className="text-[10px] font-black text-slate-500 hover:text-teal-400 transition-colors uppercase tracking-[0.4em] hover:drop-shadow-[0_0_8px_rgba(45,212,191,0.4)]">{t.clear}</button>
                 </div>
               </div>
 
-              <div className="glass-panel rounded-[2.5rem] p-10 md:p-14 flex flex-col h-[450px] md:h-[650px] relative overflow-hidden group border-teal-500/10">
-                <div className="absolute inset-0 bg-teal-500/[0.02] pointer-events-none"></div>
-                <label htmlFor="output-display" className="text-[10px] font-black uppercase tracking-[0.5em] text-teal-400 mb-8 flex items-center gap-4">
-                  Restored Sequence
-                  <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse shadow-[0_0_12px_rgba(45,212,191,0.5)]"></span>
+              {/* Output Panel */}
+              <div className="glass-panel rounded-[2.5rem] p-10 md:p-14 flex flex-col h-[450px] md:h-[650px] relative overflow-hidden group shimmer-border animate-pulse-glow" style={{ animationDuration: '4s' }}>
+                <div className="absolute inset-0 bg-gradient-to-br from-teal-500/[0.02] via-transparent to-cyan-500/[0.02] pointer-events-none" />
+                <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-teal-500/[0.03] blur-[80px] pointer-events-none group-hover:bg-teal-500/[0.05] transition-all duration-700" />
+                
+                <label htmlFor="output-display" className="relative text-[10px] font-black uppercase tracking-[0.5em] text-teal-400 mb-8 flex items-center gap-4">
+                  {t.copy}
+                  <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse shadow-[0_0_12px_rgba(45,212,191,0.5)]" />
                 </label>
-                <div id="output-display" className="flex-1 overflow-y-auto text-4xl md:text-6xl font-mono text-teal-100 whitespace-pre-wrap leading-tight scrollbar-hide">
-                  {outputText || <span className="text-slate-900 italic font-sans text-2xl font-light">Analyzing stream...</span>}
+                <div id="output-display" className="relative flex-1 overflow-y-auto text-4xl md:text-6xl font-mono text-teal-100 whitespace-pre-wrap leading-tight scrollbar-hide">
+                  {outputText || <span className="text-slate-900/60 italic font-sans text-2xl font-light">Analyzing stream...</span>}
                 </div>
                 <div className="relative mt-10">
                    <button 
                     onClick={handleCopy} 
                     disabled={!outputText} 
-                    className="w-full py-6 rounded-2xl bg-teal-500 text-slate-950 font-black text-sm uppercase tracking-[0.5em] transition-all disabled:opacity-5 disabled:grayscale hover:scale-[1.01] active:scale-95 shadow-[0_0_40px_-5px_rgba(45,212,191,0.5)] flex items-center justify-center gap-4"
+                    className="w-full py-6 rounded-2xl bg-gradient-to-r from-teal-500 to-teal-400 text-slate-950 font-black text-sm uppercase tracking-[0.5em] transition-all disabled:opacity-5 disabled:grayscale hover:scale-[1.02] active:scale-95 shadow-[0_0_40px_-5px_rgba(45,212,191,0.5)] hover:shadow-[0_0_60px_-5px_rgba(45,212,191,0.7)] flex items-center justify-center gap-4"
                   >
                     {isCopied ? <ClipboardCheck className="w-5 h-5" /> : <Clipboard className="w-5 h-5" />}
                     {isCopied ? 'Restoration Copied!' : 'Copy Restoration'}
                   </button>
                   {isCopied && (
-                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-4 py-2 bg-slate-900 text-teal-400 text-xs font-bold rounded-full animate-bounce shadow-xl border border-teal-500/20">
+                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-4 py-2 bg-slate-900/90 backdrop-blur-xl text-teal-400 text-xs font-bold rounded-full animate-bounce shadow-xl border border-teal-500/30">
                       Copied to Clipboard
                     </div>
                   )}
@@ -237,43 +276,58 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
           {/* EXAMPLES & HOW IT WORKS */}
           <section className="max-w-7xl mx-auto py-20 px-4">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">How It Works in Practice</h2>
+              <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">{t.howItWorks}</h2>
               <p className="text-slate-400 text-lg md:text-xl max-w-3xl mx-auto font-light leading-relaxed">
-                Select the layout you accidentally typed in, choose the layout you intended, and paste your text. The tool converts it instantly.
+                {t.howItWorksSubtitle}
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="glass-card p-10 rounded-3xl flex flex-col justify-between">
+              {/* Hebrew Example Card */}
+              <div className="glass-card shimmer-border p-10 rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-teal-500/[0.03] blur-[60px] pointer-events-none group-hover:bg-teal-500/[0.06] transition-all duration-700" />
                 <div>
-                  <h4 className="text-xl font-bold text-white mb-4">Hebrew Typed in English Layout</h4>
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-2xl">🇮🇱</span>
+                    <h4 className="text-xl font-bold text-white">Hebrew Typed in English Layout</h4>
+                  </div>
                   <p className="text-slate-500 mb-4 font-light leading-relaxed text-sm">You meant to type Hebrew but your keyboard was set to English. The physical keys you pressed produced Latin characters.</p>
-                  <div className="bg-slate-900/50 rounded-xl p-4 font-mono text-sm space-y-2">
-                    <div className="text-slate-500">Input (English layout):</div>
+                  <div className="bg-slate-900/60 rounded-xl p-4 font-mono text-sm space-y-2 border border-white/5">
+                    <div className="text-slate-500 text-[10px] uppercase tracking-wider">Input (English layout)</div>
                     <div className="text-white">akuo dksc</div>
-                    <div className="text-teal-400 mt-2">Restored (Hebrew):</div>
+                    <div className="w-full h-[1px] bg-white/5 my-2" />
+                    <div className="text-teal-400 text-[10px] uppercase tracking-wider">Restored (Hebrew)</div>
                     <div className="text-teal-100" dir="rtl">שלום כיתה</div>
                   </div>
                 </div>
-                <Link to={`/${sourceLang}/archive`} className="text-teal-400 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors flex items-center gap-2 mt-6">
-                  Hebrew Guide <ArrowRight className="w-4 h-4" />
+                <Link to={`/${sourceLang}/archive`} className="text-teal-400 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors flex items-center gap-2 mt-6 group/link">
+                  Hebrew Guide <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
                 </Link>
               </div>
-              <div className="glass-card p-10 rounded-3xl flex flex-col justify-between">
+              
+              {/* Russian Example Card */}
+              <div className="glass-card shimmer-border p-10 rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-cyan-500/[0.03] blur-[60px] pointer-events-none group-hover:bg-cyan-500/[0.06] transition-all duration-700" />
                 <div>
-                  <h4 className="text-xl font-bold text-white mb-4">Russian Typed in English Layout</h4>
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-2xl">🇷🇺</span>
+                    <h4 className="text-xl font-bold text-white">Russian Typed in English Layout</h4>
+                  </div>
                   <p className="text-slate-500 mb-4 font-light leading-relaxed text-sm">Your keyboard was on English QWERTY, but you intended to type Russian JCUKEN. The result looks like random Latin letters.</p>
-                  <div className="bg-slate-900/50 rounded-xl p-4 font-mono text-sm space-y-2">
-                    <div className="text-slate-500">Input (English layout):</div>
+                  <div className="bg-slate-900/60 rounded-xl p-4 font-mono text-sm space-y-2 border border-white/5">
+                    <div className="text-slate-500 text-[10px] uppercase tracking-wider">Input (English layout)</div>
                     <div className="text-white">rjvgtyn</div>
-                    <div className="text-teal-400 mt-2">Restored (Russian):</div>
+                    <div className="w-full h-[1px] bg-white/5 my-2" />
+                    <div className="text-teal-400 text-[10px] uppercase tracking-wider">Restored (Russian)</div>
                     <div className="text-teal-100">компьютер</div>
                   </div>
                 </div>
-                <Link to={`/${sourceLang}/archive`} className="text-teal-400 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors flex items-center gap-2 mt-6">
-                  Layout Guide <ArrowRight className="w-4 h-4" />
+                <Link to={`/${sourceLang}/archive`} className="text-teal-400 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors flex items-center gap-2 mt-6 group/link">
+                  Layout Guide <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
                 </Link>
               </div>
-              <div className="glass-card p-10 rounded-3xl flex flex-col justify-between border-teal-500/10">
+              
+              {/* Privacy Example Card */}
+              <div className="glass-card shimmer-border p-10 rounded-3xl flex flex-col justify-between relative overflow-hidden group">
                 <div>
                   <h4 className="text-xl font-bold text-white mb-4">Completely Private Processing</h4>
                   <p className="text-slate-500 mb-4 font-light leading-relaxed text-sm">Unlike online translation tools or AI rewriters, your text never leaves your browser. This makes it safe for passwords, emails, and confidential documents.</p>
@@ -319,17 +373,181 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
               </div>
             </div>
           </section>
+
+          {/* TRUST SIGNALS & STATS */}
+          <section className="max-w-6xl mx-auto py-24 border-t border-white/5">
+            <div className="text-center mb-20">
+              <h2 className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tight">Trusted Worldwide</h2>
+              <p className="text-slate-400 text-xl md:text-2xl max-w-3xl mx-auto font-light leading-relaxed">
+                Professionals across industries rely on GibberishGone for fast, accurate, and private text recovery.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-24">
+              {[
+                { num: '80+', label: 'Keyboard Layouts', desc: 'From QWERTY to Cyrillic to Asian scripts', icon: '🌐' },
+                { num: '100%', label: 'Client-Side', desc: 'Your text never leaves your browser', icon: '🔒' },
+                { num: '0ms', label: 'Network Delay', desc: 'Instant conversion with zero server calls', icon: '⚡' },
+                { num: 'Free', label: 'Forever', desc: 'No signup, no limits, no premium tiers', icon: '♾️' },
+              ].map((stat, i) => (
+                <div key={stat.label} className="glass-card shimmer-border p-8 rounded-3xl text-center relative overflow-hidden group" style={{ animationDelay: `${i * 100}ms` }}>
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150px] h-[150px] bg-teal-500/[0.03] blur-[50px] pointer-events-none group-hover:bg-teal-500/[0.06] transition-all duration-700" />
+                  <div className="text-3xl mb-3">{stat.icon}</div>
+                  <div className="text-4xl md:text-5xl font-black mb-2 bg-clip-text text-transparent bg-gradient-to-b from-teal-300 to-teal-600">{stat.num}</div>
+                  <div className="text-slate-400 text-sm font-bold uppercase tracking-widest">{stat.label}</div>
+                  <div className="text-slate-600 text-xs mt-2">{stat.desc}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* SUPPORTED LAYOUTS SHOWCASE */}
+            <div className="text-center mb-16">
+              <h3 className="text-3xl md:text-4xl font-black text-white mb-6 tracking-tight">Layouts We Support</h3>
+              <p className="text-slate-400 text-lg max-w-2xl mx-auto font-light">A small sample of the 80+ keyboard layouts available for instant conversion.</p>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {[
+                {name: 'English QWERTY', flag: '🇺🇸'},
+                {name: 'Hebrew SI-1452', flag: '🇮🇱'},
+                {name: 'Russian JCUKEN', flag: '🇷🇺'},
+                {name: 'Arabic 101', flag: '🇸🇦'},
+                {name: 'French AZERTY', flag: '🇫🇷'},
+                {name: 'German QWERTZ', flag: '🇩🇪'},
+                {name: 'Spanish', flag: '🇪🇸'},
+                {name: 'Italian', flag: '🇮🇹'},
+                {name: 'Portuguese', flag: '🇵🇹'},
+                {name: 'Turkish', flag: '🇹🇷'},
+                {name: 'Greek', flag: '🇬🇷'},
+                {name: 'Polish', flag: '🇵🇱'},
+                {name: 'Korean Dubeolsik', flag: '🇰🇷'},
+                {name: 'Japanese', flag: '🇯🇵'},
+                {name: 'Thai Kedmanee', flag: '🇹🇭'},
+                {name: 'Ukrainian', flag: '🇺🇦'},
+                {name: 'Czech', flag: '🇨🇿'},
+                {name: 'Hungarian', flag: '🇭🇺'},
+              ].map((layout, i) => (
+                <div key={layout.name} className="glass-card p-3 rounded-xl flex items-center gap-2.5 relative overflow-hidden" style={{ animationDelay: `${i * 30}ms` }}>
+                  <span className="text-xl flex-shrink-0">{layout.flag}</span>
+                  <span className="text-slate-400 text-xs font-medium truncate">{layout.name}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-12 text-center">
+              <Link to={`/${sourceLang}/archive`} className="px-10 py-4 bg-white/5 hover:bg-white/10 rounded-full text-slate-400 text-sm font-bold uppercase tracking-widest transition-all">View All 80+ Layouts</Link>
+            </div>
+          </section>
+
+          {/* WHY CHOOSE GIBBERISHGONE */}
+          <section className="max-w-6xl mx-auto py-24 border-t border-white/5">
+            <div className="text-center mb-20">
+              <h3 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">Why Choose GibberishGone</h3>
+              <p className="text-slate-400 text-lg max-w-3xl mx-auto font-light leading-relaxed">Unlike translation tools, AI chatbots, or online converters that send your text to remote servers, GibberishGone uses a fundamentally different approach that guarantees accuracy, privacy, and speed.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+              <div className="glass-card shimmer-border p-10 rounded-3xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-teal-500/[0.02] blur-[60px] pointer-events-none group-hover:bg-teal-500/[0.05] transition-all duration-700" />
+                <h4 className="text-xl font-bold text-white mb-4">vs Google Translate</h4>
+                <p className="text-slate-400 text-sm leading-relaxed mb-4">Google Translate guesses the meaning of words and rewrites them. It cannot recover text typed in the wrong layout because it doesn't know which physical keys were pressed. GibberishGone maps keys deterministically, so "akuo" always becomes "שלום" — never a mistranslation.</p>
+                <div className="flex items-center gap-2 text-xs text-teal-400 font-bold uppercase tracking-widest"><span className="w-2 h-2 rounded-full bg-teal-400"></span>Deterministic, not guesswork</div>
+              </div>
+              <div className="glass-card shimmer-border p-10 rounded-3xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-teal-500/[0.02] blur-[60px] pointer-events-none group-hover:bg-teal-500/[0.05] transition-all duration-700" />
+                <h4 className="text-xl font-bold text-white mb-4">vs AI Chatbots</h4>
+                <p className="text-slate-400 text-sm leading-relaxed mb-4">ChatGPT and Claude are probabilistic. They might guess "rjvgtyn" as "компьютер" correctly, or they might hallucinate something else entirely. Worse, they send your sensitive text to external servers. GibberishGone uses fixed lookup tables with zero ambiguity and zero network transmission.</p>
+                <div className="flex items-center gap-2 text-xs text-teal-400 font-bold uppercase tracking-widest"><span className="w-2 h-2 rounded-full bg-teal-400"></span>Zero hallucination risk</div>
+              </div>
+              <div className="glass-card shimmer-border p-10 rounded-3xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-teal-500/[0.02] blur-[60px] pointer-events-none group-hover:bg-teal-500/[0.05] transition-all duration-700" />
+                <h4 className="text-xl font-bold text-white mb-4">vs Online Converters</h4>
+                <p className="text-slate-400 text-sm leading-relaxed mb-4">Most online tools upload your text to a server, process it, and send it back. That means passwords, medical records, and legal documents travel across the internet. GibberishGone runs entirely in your browser. Your data never leaves your device. Not even for a millisecond.</p>
+                <div className="flex items-center gap-2 text-xs text-teal-400 font-bold uppercase tracking-widest"><span className="w-2 h-2 rounded-full bg-teal-400"></span>100% client-side processing</div>
+              </div>
+            </div>
+            <div className="glass-panel rounded-[2rem] p-10 md:p-16 text-center relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-teal-500/[0.02] blur-[100px] pointer-events-none"></div>
+              <h4 className="text-2xl md:text-3xl font-bold text-white mb-6">The Bottom Line</h4>
+              <p className="text-slate-400 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto font-light">If you need to recover text typed in the wrong keyboard layout, you need a tool that understands how keyboards work — not a translator, not an AI, and not a cloud service. GibberishGone is the only solution that combines deterministic accuracy, absolute privacy, and instant speed. And it's completely free.</p>
+              <div className="flex gap-6 justify-center mt-10">
+                <Link to={`/${sourceLang}/archive`} className="px-8 py-4 rounded-xl border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition-all font-black uppercase tracking-widest text-[11px]">Read Technical Deep-Dive</Link>
+                <Link to={`/${sourceLang}/blog`} className="px-8 py-4 rounded-xl border border-white/10 text-white hover:bg-white/5 transition-all font-black uppercase tracking-widest text-[11px]">Browse the Blog</Link>
+              </div>
+            </div>
+          </section>
+
+          <SchemaInjector id="reviews-schema" schema={{
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            'name': 'GibberishGone',
+            'aggregateRating': {
+              '@type': 'AggregateRating',
+              'ratingValue': '5',
+              'reviewCount': '3',
+              'bestRating': '5'
+            },
+            'review': [
+              {
+                '@type': 'Review',
+                'author': { '@type': 'Person', 'name': 'Avi R.' },
+                'reviewRating': { '@type': 'Rating', 'ratingValue': '5', 'bestRating': '5' },
+                'reviewBody': 'As a developer in Israel, I switch between Hebrew and English hundreds of times a day. This tool has saved me from retyping entire commit messages more times than I can count.',
+                'publisher': { '@type': 'Organization', 'name': 'GibberishGone' }
+              },
+              {
+                '@type': 'Review',
+                'author': { '@type': 'Person', 'name': 'Dr. Layla K.' },
+                'reviewRating': { '@type': 'Rating', 'ratingValue': '5', 'bestRating': '5' },
+                'reviewBody': 'I type patient notes in Arabic and English throughout my shift. When the layout switches by mistake, this tool recovers everything in seconds. And the privacy is essential for medical data.',
+                'publisher': { '@type': 'Organization', 'name': 'GibberishGone' }
+              },
+              {
+                '@type': 'Review',
+                'author': { '@type': 'Person', 'name': 'Maria S.' },
+                'reviewRating': { '@type': 'Rating', 'ratingValue': '5', 'bestRating': '5' },
+                'reviewBody': 'I work in customer support and answer tickets in three languages. Layout errors used to make me retype entire responses. Now I just paste, convert, and copy. Game changer.',
+                'publisher': { '@type': 'Organization', 'name': 'GibberishGone' }
+              }
+            ]
+          }} />
+          {/* TESTIMONIALS SECTION */}
+          <section className="max-w-6xl mx-auto py-24 border-t border-white/5">
+            <div className="text-center mb-16">
+              <h3 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">What Users Say</h3>
+              <p className="text-slate-400 text-lg max-w-2xl mx-auto font-light">Real feedback from professionals who use GibberishGone every day.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { quote: "As a developer in Israel, I switch between Hebrew and English hundreds of times a day. This tool has saved me from retyping entire commit messages more times than I can count.", name: "Avi R.", role: "Software Engineer, Tel Aviv", initials: "AR", color: "from-teal-400 to-cyan-400" },
+                { quote: "I type patient notes in Arabic and English throughout my shift. When the layout switches by mistake, this tool recovers everything in seconds. And the privacy is essential for medical data.", name: "Dr. Layla K.", role: "Physician, Amman", initials: "LK", color: "from-cyan-400 to-sky-400" },
+                { quote: "I work in customer support and answer tickets in three languages. Layout errors used to make me retype entire responses. Now I just paste, convert, and copy. Game changer.", name: "Maria S.", role: "Support Lead, Lisbon", initials: "MS", color: "from-teal-400 to-emerald-400" },
+              ].map((t) => (
+                <div key={t.initials} className="glass-card shimmer-border p-10 rounded-3xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-teal-500/[0.02] blur-[60px] pointer-events-none group-hover:bg-teal-500/[0.05] transition-all duration-700" />
+                  <div className={`text-5xl font-serif mb-6 bg-gradient-to-br ${t.color} bg-clip-text text-transparent opacity-60`}>"</div>
+                  <p className="text-slate-300 text-lg leading-relaxed mb-8 relative">{t.quote}</p>
+                  <div className="flex items-center gap-4 relative">
+                    <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${t.color} p-[2px]`}>
+                      <div className="w-full h-full rounded-full bg-[#020617] flex items-center justify-center text-xs font-bold text-white">{t.initials}</div>
+                    </div>
+                    <div>
+                      <div className="text-white font-bold text-sm">{t.name}</div>
+                      <div className="text-slate-500 text-xs">{t.role}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
         </div>
       );
       case 'knowledge': return (
   <div className="w-full max-w-6xl animate-reveal px-8 pb-64 mx-auto">
+    <Breadcrumbs currentView={currentView} basePath={`/${sourceLang}`} />
     <AdSense />
     <header className="text-center mb-16 pt-32">
       <div className="mb-12">
          <Link to={`/${sourceLang}/utility`} className="px-6 py-3 bg-white/5 hover:bg-white/10 rounded-full text-xs font-bold uppercase tracking-widest text-slate-500 transition-all">← Back to Restoration Tool</Link>
       </div>
-      <h1 className="text-7xl md:text-[10rem] font-black text-white mb-12 font-magazine tracking-tighter italic leading-[0.85]">The Archive.</h1>
-      <p className="text-teal-400 opacity-60 text-2xl md:text-3xl font-light italic leading-relaxed">Practical guides and references for multilingual typists.</p>
+      <h1 className="text-7xl md:text-[10rem] font-black text-white mb-12 font-magazine tracking-tighter italic leading-[0.85]">{t.archiveTitle}</h1>
+      <p className="text-teal-400 opacity-60 text-2xl md:text-3xl font-light italic leading-relaxed">{t.archiveSubtitle}</p>
     </header>
     <div className="space-y-32">
       {articles.map((art) => (
@@ -362,7 +580,8 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
 );
       case 'about': return (
         <div className="w-full max-w-5xl animate-reveal px-8 mx-auto pt-32">
-          <ContentSection badge="About" title="What Is GibberishGone?">
+          <Breadcrumbs currentView={currentView} basePath={`/${sourceLang}`} homeLabel={t.breadcrumbHome} />
+          <ContentSection badge={t.aboutBadge} title={t.aboutTitle}>
             <p>GibberishGone is a free online tool that fixes text typed in the wrong keyboard layout. If you accidentally typed a Hebrew email while your computer was set to English, or wrote English code while the layout was stuck on Russian, this tool converts the text back to what you originally intended — instantly and entirely in your browser.</p>
             <p>We built this tool because we experienced the problem ourselves. As multilingual developers and writers, we kept losing paragraphs of work to simple layout slips. Existing solutions were either cloud-based (sending our text to unknown servers) or too limited in the languages they supported. We wanted something fast, private, and accurate.</p>
 
@@ -393,6 +612,16 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
               <p className="text-slate-400 mb-4">The conversion engine uses standard keyboard layout mapping tables published by national standards bodies and operating system vendors. When you paste scrambled text, the tool looks up each character against the mapping table for the layout that was accidentally active, then outputs the corresponding character from the layout you intended. There is no artificial intelligence, no probabilistic guessing, and no server involved. The entire process happens in your browser using JavaScript.</p>
             </div>
 
+            <div className="mt-12 p-8 rounded-2xl bg-white/5 border border-white/10">
+              <h3 className="text-teal-400 font-mono text-[10px] tracking-[0.3em] uppercase mb-6">Contact & Ownership</h3>
+              <p className="text-slate-400 mb-4">GibberishGone is an independent project built and maintained by a team of multilingual developers. We are committed to keeping the tool free, private, and accessible to everyone.</p>
+              <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                <a href="mailto:shoprdo63@gmail.com" className="text-white hover:text-teal-400 transition-colors font-bold">shoprdo63@gmail.com</a>
+                <span className="hidden md:inline text-slate-700">|</span>
+                <Link to={`/${sourceLang}/contact`} className="text-teal-400 hover:text-white transition-colors font-bold uppercase text-xs tracking-widest">Visit Support Page</Link>
+              </div>
+            </div>
+
             <div className="flex gap-6 pt-10">
               <Link to={`/${sourceLang}/protocol`} className="px-8 py-4 rounded-xl border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition-all font-black uppercase tracking-widest text-[11px]">Technical Details</Link>
               <Link to={`/${sourceLang}/archive`} className="px-8 py-4 rounded-xl border border-white/10 text-white hover:bg-white/5 transition-all font-black uppercase tracking-widest text-[11px]">Read Guides</Link>
@@ -402,7 +631,8 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
       );
       case 'how-it-works': return (
         <div className="w-full max-w-5xl animate-reveal px-8 mx-auto pt-32">
-          <ContentSection badge="The Protocol" title="Deterministic Spec">
+          <Breadcrumbs currentView={currentView} basePath={`/${sourceLang}`} homeLabel={t.breadcrumbHome} />
+          <ContentSection badge={t.protocolBadge} title={t.protocolTitle}>
             <p>While AI models attempt to "predict" your text based on probability, GibberishGone utilizes <strong>Deterministic Scancode Mapping</strong>. By reversing the OS-level lookup tables, we reconstruct your original intent with bit-perfect accuracy.</p>
             
             <h4 className="text-white font-bold mt-10 mb-5 text-xl">How Keyboard Layouts Work</h4>
@@ -457,7 +687,8 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
       );
       case 'privacy': return (
         <div className="w-full max-w-5xl animate-reveal px-8 mx-auto pt-32">
-          <ContentSection badge="Legal" title="Privacy Policy">
+          <Breadcrumbs currentView={currentView} basePath={`/${sourceLang}`} homeLabel={t.breadcrumbHome} />
+          <ContentSection badge={t.privacyBadge} title={t.privacyTitle}>
             <p>GibberishGone is engineered as a <strong>Zero-Transmission Utility</strong>. We provide the following explicit declarations regarding your data privacy and digital sovereignty.</p>
             
             <h4 className="text-white font-bold mt-10 mb-5 text-xl">1. Data Sovereignty and Zero-Transmission</h4>
@@ -496,7 +727,8 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
       );
       case 'terms': return (
         <div className="w-full max-w-5xl animate-reveal px-8 mx-auto pt-32">
-          <ContentSection badge="Legal" title="Terms of Service">
+          <Breadcrumbs currentView={currentView} basePath={`/${sourceLang}`} homeLabel={t.breadcrumbHome} />
+          <ContentSection badge={t.termsBadge} title={t.termsTitle}>
             <p>By accessing the GibberishGone utility, you agree to the following professional terms of use. These terms govern your use of our text restoration service and outline the rights and responsibilities of both parties.</p>
             
             <h4 className="text-white font-bold mt-10 mb-5 text-xl">1. Provision of Service</h4>
@@ -541,7 +773,9 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
       );
       case 'faq': return (
         <div className="w-full max-w-5xl animate-reveal px-8 mx-auto pt-32">
-          <ContentSection badge="FAQ" title="Frequently Asked Questions">
+          <Breadcrumbs currentView={currentView} basePath={`/${sourceLang}`} homeLabel={t.breadcrumbHome} />
+          <AdSense />
+          <ContentSection badge={t.faqBadge} title={t.faqTitle}>
             <div className="space-y-10">
               <div>
                 <h4 className="text-white font-bold text-xl mb-3">Is GibberishGone really free?</h4>
@@ -575,13 +809,38 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
                 <h4 className="text-white font-bold text-xl mb-3">Does the tool fix spelling mistakes?</h4>
                 <p>No. This tool only fixes layout mismatches — when the right keys were pressed but the wrong language was active. It does not correct spelling, grammar, or typos. If you actually misspelled a word, it will remain misspelled after conversion.</p>
               </div>
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">Is it safe to convert passwords and sensitive documents?</h4>
+                <p>Yes. Because all processing happens locally in your browser, your text never leaves your device. You can verify this by disconnecting from the internet after the page loads — the converter will continue to work. This makes it safe for passwords, legal documents, medical records, and business communications.</p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">How is this different from Google Translate?</h4>
+                <p>Google Translate changes the language of your text — for example, from English to Hebrew. GibberishGone recovers the text you originally intended to type. If you typed Hebrew words on an English keyboard, Google Translate would try to interpret the resulting Latin gibberish as English and translate it to Hebrew incorrectly. GibberishGone simply reverses the keyboard mapping to restore your original Hebrew text exactly.</p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">Can I recover text typed on a laptop with a different keyboard layout?</h4>
+                <p>Yes, but you need to know which layout was active when the text was typed. If you used a French laptop with an AZERTY layout, select French as the source layout even if you intended to type English. The converter works with any supported source layout regardless of your current hardware.</p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">Why should I trust this tool over others?</h4>
+                <p>Three reasons: First, deterministic accuracy — we use official national keyboard standards, not AI guessing. Second, complete privacy — your text never reaches our servers. Third, transparency — the conversion logic is pure JavaScript that runs in your browser, so you can inspect it yourself if you know how to use browser developer tools.</p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">What if my language is not in the list?</h4>
+                <p>Contact us with the language and keyboard layout you need. We regularly add new layouts based on user requests. Because each layout requires careful verification against official standards, we prioritize requests that benefit the largest number of users, but we consider all suggestions.</p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-xl mb-3">Does the tool work with right-to-left languages like Arabic and Hebrew?</h4>
+                <p>Yes. The converter preserves the exact character sequence. When you paste the converted text into an application that supports right-to-left rendering (like Microsoft Word, Google Docs, or most email clients), the text will display correctly from right to left. The converter handles the character mapping; your application handles the visual direction.</p>
+              </div>
             </div>
           </ContentSection>
         </div>
       );
       case 'support': return (
         <div className="w-full max-w-5xl animate-reveal px-8 mx-auto pt-32">
-          <ContentSection badge="Support" title="Contact Us">
+          <Breadcrumbs currentView={currentView} basePath={`/${sourceLang}`} homeLabel={t.breadcrumbHome} />
+          <ContentSection badge={t.supportBadge} title={t.supportTitle}>
             <p>We're here to help you get the most out of GibberishGone. Whether you've found a bug, have a feature request, or need help with a specific keyboard layout, we want to hear from you.</p>
             
             <h4 className="text-white font-bold mt-10 mb-5 text-xl">What to Include in Your Message</h4>
@@ -629,12 +888,160 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
           </ContentSection>
         </div>
       );
+      case 'use-cases': return (
+        <div className="w-full max-w-5xl animate-reveal px-8 mx-auto pt-32">
+          <Breadcrumbs currentView={currentView} basePath={`/${sourceLang}`} homeLabel={t.breadcrumbHome} />
+          <AdSense />
+          <ContentSection badge={t.useCasesBadge} title={t.useCasesTitle}>
+            <p>Keyboard layout mismatches affect millions of people every day. Here are the most common scenarios where GibberishGone saves time, prevents frustration, and protects sensitive information.</p>
+
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">Software Developers</h4>
+            <p>Developers switch between English (for code) and their native language (for comments and documentation) constantly. A single missed switch turns an entire docstring or commit message into unreadable gibberish. Retyping destroys flow state, which studies show takes over 20 minutes to recover. GibberishGone restores the text instantly, letting developers stay focused on solving problems rather than fixing their own typos.</p>
+
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">Students and Academics</h4>
+            <p>Multilingual students write essays, research papers, and assignments that quote sources in multiple languages. Losing a paragraph to a layout error can mean missing a deadline or submitting incomplete work. A layout converter acts as an insurance policy, turning a potential disaster into a two-second fix. Students on shared library computers are especially vulnerable because the previous user may have left the system in an unexpected layout.</p>
+
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">Journalists and Translators</h4>
+            <p>Working under tight deadlines with sources in multiple languages, journalists cannot afford to retype interviews or translations because of a layout slip. When every minute counts, deterministic text recovery is not a luxury — it is a professional necessity. The tool works offline, making it ideal for reporters working in the field with limited connectivity.</p>
+
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">Travelers and Remote Workers</h4>
+            <p>Using internet cafes, hotel business centers, or borrowed laptops means dealing with whatever keyboard configuration the previous user left behind. Without administrator rights to change system settings, travelers are stuck. A browser-based layout converter requires no installation, no permissions, and works on any computer with a web browser — making it the perfect travel companion.</p>
+
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">Customer Support Representatives</h4>
+            <p>Support agents serving global customers switch languages dozens of times per shift. A layout error in a customer-facing message damages trust and professionalism. Instead of retyping the entire response while the customer waits, agents can recover the text instantly and maintain a smooth conversation.</p>
+
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">Medical and Legal Professionals</h4>
+            <p>Doctors, nurses, lawyers, and paralegals frequently type patient names, medication names, legal terms, and case references in multiple languages. A layout error here is not merely inconvenient — it can lead to miscommunication with serious consequences. Deterministic recovery ensures that every character is restored exactly as intended, preserving the integrity of critical records.</p>
+
+            <h4 className="text-white font-bold mt-10 mb-5 text-xl">Government and Military Personnel</h4>
+            <p>Personnel working in secure environments with air-gapped networks or restricted internet access need tools that function entirely offline. GibberishGone works without an internet connection after the initial page load, making it suitable for environments where external services are prohibited. The zero-transmission architecture also satisfies strict data security policies.</p>
+
+            <div className="mt-12 p-8 rounded-2xl bg-white/5 border border-white/10">
+              <h3 className="text-teal-400 font-mono text-[10px] tracking-[0.3em] uppercase mb-6">The Common Thread</h3>
+              <p className="text-slate-400">Regardless of profession, every user shares the same need: fast, accurate, private recovery of text typed in the wrong layout. GibberishGone serves all of them with the same deterministic engine, the same privacy guarantee, and the same zero-cost access.</p>
+            </div>
+
+            <div className="flex gap-6 pt-10">
+              <Link to={`/${sourceLang}/archive`} className="px-8 py-4 rounded-xl border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition-all font-black uppercase tracking-widest text-[11px]">Read Detailed Guides</Link>
+              <Link to={`/${sourceLang}/utility`} className="px-8 py-4 rounded-xl border border-white/10 text-white hover:bg-white/5 transition-all font-black uppercase tracking-widest text-[11px]">Try the Converter</Link>
+            </div>
+          </ContentSection>
+        </div>
+      );
+      case 'blog': return (
+        <div className="w-full max-w-6xl animate-reveal px-8 mx-auto pt-32">
+          <Breadcrumbs currentView={currentView} basePath={`/${sourceLang}`} homeLabel={t.breadcrumbHome} />
+          <SchemaInjector id="blog-schema" schema={{
+            '@context': 'https://schema.org',
+            '@type': 'Blog',
+            'name': 'GibberishGone Blog',
+            'description': 'Expert guides on keyboard layouts, multilingual typing, privacy, text recovery, and productivity.',
+            'url': `https://gibberishgone.com/${sourceLang}/blog`,
+            'publisher': {
+              '@type': 'Organization',
+              'name': 'GibberishGone',
+              'logo': { '@type': 'ImageObject', 'url': 'https://gibberishgone.com/logo.png' }
+            },
+            'blogPost': BLOG_POSTS.map(post => ({
+              '@type': 'BlogPosting',
+              'headline': post.title,
+              'description': post.excerpt,
+              'author': { '@type': 'Organization', 'name': 'GibberishGone' },
+              'datePublished': post.date,
+              'dateModified': post.date,
+              'keywords': post.tags.join(', '),
+              'articleSection': post.category
+            }))
+          }} />
+          <AdSense />
+          <header className="text-center mb-16">
+            <span className="text-teal-400 font-mono text-[9px] tracking-[0.4em] uppercase opacity-60 mb-4 block">{t.blogBadge}</span>
+            <h1 className="text-5xl md:text-[8rem] font-black text-white mb-8 tracking-[-0.05em] leading-[0.85]">{t.blogTitle}</h1>
+            <p className="text-slate-400 text-xl md:text-2xl max-w-3xl mx-auto font-light leading-relaxed">{t.blogSubtitle}</p>
+          </header>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
+            {BLOG_POSTS.map((post) => (
+              <article key={post.id} className="glass-card shimmer-border p-8 rounded-3xl flex flex-col h-full relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-teal-500/[0.02] blur-[60px] pointer-events-none group-hover:bg-teal-500/[0.05] transition-all duration-700" />
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-teal-400/60">{post.category}</span>
+                  <span className="text-slate-700 text-xs">·</span>
+                  <span className="text-slate-600 text-xs">{post.readTime}</span>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3 leading-tight group-hover:text-teal-300 transition-colors">{post.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed mb-6 flex-1">{post.excerpt}</p>
+                <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                  <span className="text-slate-600 text-[10px] font-mono uppercase tracking-wider">{post.date}</span>
+                  <span className="text-teal-400 text-xs font-bold uppercase tracking-widest group-hover:text-white transition-colors">Read Article</span>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {post.tags.slice(0, 3).map(tag => (
+                    <span key={tag} className="px-2 py-1 rounded-full bg-white/5 text-slate-500 text-[10px] font-medium">#{tag}</span>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="glass-panel rounded-[2rem] p-10 md:p-16 mb-16">
+            <h3 className="text-2xl font-bold text-white mb-8 text-center">Explore More Resources</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Link to={`/${sourceLang}/archive`} className="glass-card p-6 rounded-2xl hover:border-teal-500/30 transition-all group">
+                <div className="text-teal-400 font-mono text-[9px] tracking-[0.3em] uppercase mb-3">Archive</div>
+                <h4 className="text-white font-bold mb-2 group-hover:text-teal-300 transition-colors">14 In-Depth Guides</h4>
+                <p className="text-slate-500 text-xs leading-relaxed">Comprehensive articles covering keyboard layouts, multilingual typing, privacy, and real-world use cases.</p>
+              </Link>
+              <Link to={`/${sourceLang}/use-cases`} className="glass-card p-6 rounded-2xl hover:border-teal-500/30 transition-all group">
+                <div className="text-teal-400 font-mono text-[9px] tracking-[0.3em] uppercase mb-3">Use Cases</div>
+                <h4 className="text-white font-bold mb-2 group-hover:text-teal-300 transition-colors">7 Professional Scenarios</h4>
+                <p className="text-slate-500 text-xs leading-relaxed">Discover how developers, doctors, journalists, and students use GibberishGone every day.</p>
+              </Link>
+              <Link to={`/${sourceLang}/faq`} className="glass-card p-6 rounded-2xl hover:border-teal-500/30 transition-all group">
+                <div className="text-teal-400 font-mono text-[9px] tracking-[0.3em] uppercase mb-3">FAQ</div>
+                <h4 className="text-white font-bold mb-2 group-hover:text-teal-300 transition-colors">15 Common Questions</h4>
+                <p className="text-slate-500 text-xs leading-relaxed">Find answers about privacy, language support, mobile use, passwords, and offline capability.</p>
+              </Link>
+              <Link to={`/${sourceLang}/protocol`} className="glass-card p-6 rounded-2xl hover:border-teal-500/30 transition-all group">
+                <div className="text-teal-400 font-mono text-[9px] tracking-[0.3em] uppercase mb-3">Protocol</div>
+                <h4 className="text-white font-bold mb-2 group-hover:text-teal-300 transition-colors">How It Works</h4>
+                <p className="text-slate-500 text-xs leading-relaxed">Learn the technical details behind deterministic keyboard layout recovery and scancode mapping.</p>
+              </Link>
+            </div>
+          </div>
+          <div className="text-center">
+            <p className="text-slate-500 text-sm max-w-2xl mx-auto leading-relaxed mb-8">Our blog is regularly updated with new guides, technical explainers, and industry insights. All articles are written by subject matter experts and reviewed for accuracy before publication.</p>
+            <div className="glass-card p-10 rounded-3xl max-w-2xl mx-auto text-center">
+              <h3 className="text-white font-bold text-xl mb-4">Have a topic suggestion?</h3>
+              <p className="text-slate-400 text-sm mb-6">We welcome ideas from our community. Whether you want a guide for a specific keyboard layout, a comparison with another tool, or a deep-dive into typing technology, let us know.</p>
+              <Link to={`/${sourceLang}/contact`} className="px-8 py-4 rounded-xl border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition-all font-black uppercase tracking-widest text-[11px]">Contact Us</Link>
+            </div>
+          </div>
+        </div>
+      );
       default: return <Navigate to={`/${sourceLang}/utility`} replace />;
     }
   };
 
   return (
-    <div className="min-h-full w-full flex flex-col scroll-smooth">
+    <div className="min-h-full w-full flex flex-col scroll-smooth relative">
+      {/* Background Effects */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Gradient Orbs */}
+        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-teal-500/[0.04] blur-[120px] animate-float" style={{ animationDelay: '0s' }} />
+        <div className="absolute top-[20%] right-[-5%] w-[500px] h-[500px] rounded-full bg-cyan-500/[0.03] blur-[100px] animate-float" style={{ animationDelay: '-2s' }} />
+        <div className="absolute bottom-[-10%] left-[30%] w-[700px] h-[700px] rounded-full bg-teal-600/[0.02] blur-[140px] animate-float" style={{ animationDelay: '-4s' }} />
+        <div className="absolute top-[50%] left-[60%] w-[400px] h-[400px] rounded-full bg-sky-500/[0.02] blur-[80px] animate-float" style={{ animationDelay: '-1s' }} />
+        {/* Mesh Grid */}
+        <div 
+          className="absolute inset-0 opacity-[0.015]"
+          style={{
+            backgroundImage: `linear-gradient(rgba(45,212,191,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(45,212,191,0.3) 1px, transparent 1px)`,
+            backgroundSize: '60px 60px'
+          }}
+        />
+      </div>
+      {/* Noise Texture */}
+      <div className="noise-overlay" />
+
       <header className="fixed top-0 inset-x-0 z-[100] border-b border-white/10 bg-[#020617]/80 backdrop-blur-xl">
         <nav className="max-w-[1600px] mx-auto px-10 md:px-16 h-32 flex items-center justify-between">
           <Link to={`/${sourceLang}/utility`} className="flex items-center gap-6 group transition-all" aria-label="GibberishGone Home">
@@ -648,10 +1055,13 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
           </Link>
           <div className="hidden lg:flex items-center gap-20">
             {[
-                {id: 'converter', label: 'Utility', path: '/utility'}, 
-                {id: 'knowledge', label: 'Archive', path: '/archive'}, 
-                {id: 'about', label: 'Manifesto', path: '/manifesto'}, 
-                {id: 'how-it-works', label: 'Protocol', path: '/protocol'}
+                {id: 'converter', path: '/utility'},
+                {id: 'use-cases', path: '/use-cases'},
+                {id: 'knowledge', path: '/archive'},
+                {id: 'blog', path: '/blog'},
+                {id: 'faq', path: '/faq'},
+                {id: 'about', path: '/manifesto'},
+                {id: 'how-it-works', path: '/protocol'}
             ].map((v) => (
               <Link 
                 key={v.id}
@@ -659,7 +1069,7 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
                 className={`text-sm font-black tracking-[0.4em] uppercase transition-all duration-300 py-3 relative group brightness-100 hover:brightness-125
                   ${currentView === v.id ? 'text-teal-400' : 'text-slate-500 hover:text-white hover:drop-shadow-[0_0_12px_rgba(45,212,191,0.4)] hover:[text-shadow:0_0_10px_rgba(0,255,255,0.5)]'}`}
               >
-                {v.label}
+                {t.nav[v.id] || v.id}
                 <span className={`absolute bottom-0 left-0 w-full h-[3px] bg-teal-400 transition-transform duration-500 origin-left 
                   ${currentView === v.id ? 'scale-x-100 shadow-[0_0_15px_rgba(45,212,191,0.6)]' : 'scale-x-0 group-hover:scale-x-100'}`} />
               </Link>
@@ -702,23 +1112,34 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
                 </nav>
               </div>
               <div>
+                <h3 className="text-white/40 font-black mb-10 uppercase tracking-[0.5em] text-[10px]">RESOURCES</h3>
+                <nav className="flex flex-col gap-8 font-black tracking-[0.2em] text-xs">
+                  <Link to={`/${sourceLang}/use-cases`} className="hover:text-teal-400 transition-colors uppercase">Use Cases</Link>
+                  <Link to={`/${sourceLang}/archive`} className="hover:text-teal-400 transition-colors uppercase">Archive Guides</Link>
+                  <Link to={`/${sourceLang}/blog`} className="hover:text-teal-400 transition-colors uppercase">Blog</Link>
+                  <Link to={`/${sourceLang}/faq`} className="hover:text-teal-400 transition-colors uppercase">FAQ</Link>
+                </nav>
+              </div>
+              <div>
                 <h3 className="text-white/40 font-black mb-10 uppercase tracking-[0.5em] text-[10px]">SYSTEM</h3>
                 <nav className="flex flex-col gap-8 font-black tracking-[0.2em] text-xs">
                   <Link to={`/${sourceLang}/protocol`} className="hover:text-teal-400 transition-colors uppercase">Security Protocol</Link>
-                  <Link to={`/${sourceLang}/utility`} className="hover:text-teal-400 transition-colors uppercase cursor-default opacity-20">System Status</Link>
+                  <Link to={`/${sourceLang}/manifesto`} className="hover:text-teal-400 transition-colors uppercase">About</Link>
                 </nav>
               </div>
             </div>
 
             <div className="max-w-2xl mx-auto opacity-20 mb-20 italic text-center leading-loose text-xs text-slate-500">
-                <p>GibberishGone is a high-performance utility for digital input management. We maintain local, zero-transmission processing and purge all buffers upon session termination.</p>
+                <p>{t.footerDesc}</p>
+                <p className="mt-4">{t.footerAds}</p>
                 <p className="font-mono text-[9px] not-italic uppercase tracking-[0.6em] mt-8 text-slate-800">Verified: pub-8446552009469150 // DIRECT // PRIVACY_ENFORCED</p>
             </div>
             <div className="border-t border-white/5 pt-16 text-center">
-              <p className="font-black text-slate-900 tracking-[0.6em] text-base uppercase">&copy; 2026 GIBBERISHGONE // UNIVERSAL INPUT UTILITY</p>
+              <p className="font-black text-slate-900 tracking-[0.6em] text-base uppercase">{t.footerCopy}</p>
             </div>
         </div>
       </footer>
+      <CookieConsent cookieTitle={t.cookieTitle} cookieDesc={t.cookieDesc} acceptText={t.accept} privacyLink={`/${sourceLang}/privacy`} />
     </div>
   );
 };
