@@ -377,9 +377,9 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
           {/* TRUST SIGNALS & STATS */}
           <section className="max-w-6xl mx-auto py-24 border-t border-white/5">
             <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tight">Trusted Worldwide</h2>
+              <h2 className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tight">Built for Privacy</h2>
               <p className="text-slate-400 text-xl md:text-2xl max-w-3xl mx-auto font-light leading-relaxed">
-                Professionals across industries rely on GibberishGone for fast, accurate, and private text recovery.
+                A free tool designed for anyone who types in multiple languages and needs to recover text typed in the wrong keyboard layout.
               </p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-24">
@@ -830,10 +830,10 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
           <Breadcrumbs currentView={currentView} basePath={`/${sourceLang}`} homeLabel={t.breadcrumbHome} />
           <AdSense />
           <ContentSection badge={t.useCasesBadge} title={t.useCasesTitle}>
-            <p>Keyboard layout mismatches affect millions of people every day. Here are the most common scenarios where GibberishGone saves time, prevents frustration, and protects sensitive information.</p>
+            <p>Keyboard layout mismatches are a common problem for multilingual typists. Here are scenarios where a layout converter can save time and prevent frustration.</p>
 
             <h4 className="text-white font-bold mt-10 mb-5 text-xl">Software Developers</h4>
-            <p>Developers switch between English (for code) and their native language (for comments and documentation) constantly. A single missed switch turns an entire docstring or commit message into unreadable gibberish. Retyping destroys flow state, which studies show takes over 20 minutes to recover. GibberishGone restores the text instantly, letting developers stay focused on solving problems rather than fixing their own typos.</p>
+            <p>Developers switch between English (for code) and their native language (for comments and documentation) constantly. A single missed switch turns an entire docstring or commit message into unreadable gibberish. Retyping interrupts focus and wastes time. A layout converter restores the text instantly, letting developers stay focused on solving problems rather than fixing their own typos.</p>
 
             <h4 className="text-white font-bold mt-10 mb-5 text-xl">Students and Academics</h4>
             <p>Multilingual students write essays, research papers, and assignments that quote sources in multiple languages. Losing a paragraph to a layout error can mean missing a deadline or submitting incomplete work. A layout converter acts as an insurance policy, turning a potential disaster into a two-second fix. Students on shared library computers are especially vulnerable because the previous user may have left the system in an unexpected layout.</p>
@@ -930,7 +930,7 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
               <Link to={`/${sourceLang}/use-cases`} className="glass-card p-6 rounded-2xl hover:border-teal-500/30 transition-all group">
                 <div className="text-teal-400 font-mono text-[9px] tracking-[0.3em] uppercase mb-3">Use Cases</div>
                 <h4 className="text-white font-bold mb-2 group-hover:text-teal-300 transition-colors">7 Professional Scenarios</h4>
-                <p className="text-slate-500 text-xs leading-relaxed">Discover how developers, doctors, journalists, and students use GibberishGone every day.</p>
+                <p className="text-slate-500 text-xs leading-relaxed">Discover how developers, doctors, journalists, and students can use a layout converter.</p>
               </Link>
               <Link to={`/${sourceLang}/faq`} className="glass-card p-6 rounded-2xl hover:border-teal-500/30 transition-all group">
                 <div className="text-teal-400 font-mono text-[9px] tracking-[0.3em] uppercase mb-3">FAQ</div>
@@ -945,7 +945,7 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
             </div>
           </div>
           <div className="text-center">
-            <p className="text-slate-500 text-sm max-w-2xl mx-auto leading-relaxed mb-8">Our blog is regularly updated with new guides, technical explainers, and industry insights. All articles are written by subject matter experts and reviewed for accuracy before publication.</p>
+            <p className="text-slate-500 text-sm max-w-2xl mx-auto leading-relaxed mb-8">Our blog covers keyboard layouts, multilingual typing, and text recovery. Articles are researched using official keyboard standards and technical documentation.</p>
             <div className="glass-card p-10 rounded-3xl max-w-2xl mx-auto text-center">
               <h3 className="text-white font-bold text-xl mb-4">Have a topic suggestion?</h3>
               <p className="text-slate-400 text-sm mb-6">We welcome ideas from our community. Whether you want a guide for a specific keyboard layout, a comparison with another tool, or a deep-dive into typing technology, let us know.</p>
