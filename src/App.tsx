@@ -473,69 +473,6 @@ const articles = useMemo(() => RESEARCH_ARTICLES, []);
             </div>
           </section>
 
-          <SchemaInjector id="reviews-schema" schema={{
-            '@context': 'https://schema.org',
-            '@type': 'Organization',
-            'name': 'GibberishGone',
-            'aggregateRating': {
-              '@type': 'AggregateRating',
-              'ratingValue': '5',
-              'reviewCount': '3',
-              'bestRating': '5'
-            },
-            'review': [
-              {
-                '@type': 'Review',
-                'author': { '@type': 'Person', 'name': 'Avi R.' },
-                'reviewRating': { '@type': 'Rating', 'ratingValue': '5', 'bestRating': '5' },
-                'reviewBody': 'As a developer in Israel, I switch between Hebrew and English hundreds of times a day. This tool has saved me from retyping entire commit messages more times than I can count.',
-                'publisher': { '@type': 'Organization', 'name': 'GibberishGone' }
-              },
-              {
-                '@type': 'Review',
-                'author': { '@type': 'Person', 'name': 'Dr. Layla K.' },
-                'reviewRating': { '@type': 'Rating', 'ratingValue': '5', 'bestRating': '5' },
-                'reviewBody': 'I type patient notes in Arabic and English throughout my shift. When the layout switches by mistake, this tool recovers everything in seconds. And the privacy is essential for medical data.',
-                'publisher': { '@type': 'Organization', 'name': 'GibberishGone' }
-              },
-              {
-                '@type': 'Review',
-                'author': { '@type': 'Person', 'name': 'Maria S.' },
-                'reviewRating': { '@type': 'Rating', 'ratingValue': '5', 'bestRating': '5' },
-                'reviewBody': 'I work in customer support and answer tickets in three languages. Layout errors used to make me retype entire responses. Now I just paste, convert, and copy. Game changer.',
-                'publisher': { '@type': 'Organization', 'name': 'GibberishGone' }
-              }
-            ]
-          }} />
-          {/* TESTIMONIALS SECTION */}
-          <section className="max-w-6xl mx-auto py-24 border-t border-white/5">
-            <div className="text-center mb-16">
-              <h3 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">What Users Say</h3>
-              <p className="text-slate-400 text-lg max-w-2xl mx-auto font-light">Real feedback from professionals who use GibberishGone every day.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                { quote: "As a developer in Israel, I switch between Hebrew and English hundreds of times a day. This tool has saved me from retyping entire commit messages more times than I can count.", name: "Avi R.", role: "Software Engineer, Tel Aviv", initials: "AR", color: "from-teal-400 to-cyan-400" },
-                { quote: "I type patient notes in Arabic and English throughout my shift. When the layout switches by mistake, this tool recovers everything in seconds. And the privacy is essential for medical data.", name: "Dr. Layla K.", role: "Physician, Amman", initials: "LK", color: "from-cyan-400 to-sky-400" },
-                { quote: "I work in customer support and answer tickets in three languages. Layout errors used to make me retype entire responses. Now I just paste, convert, and copy. Game changer.", name: "Maria S.", role: "Support Lead, Lisbon", initials: "MS", color: "from-teal-400 to-emerald-400" },
-              ].map((t) => (
-                <div key={t.initials} className="glass-card shimmer-border p-10 rounded-3xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-teal-500/[0.02] blur-[60px] pointer-events-none group-hover:bg-teal-500/[0.05] transition-all duration-700" />
-                  <div className={`text-5xl font-serif mb-6 bg-gradient-to-br ${t.color} bg-clip-text text-transparent opacity-60`}>"</div>
-                  <p className="text-slate-300 text-lg leading-relaxed mb-8 relative">{t.quote}</p>
-                  <div className="flex items-center gap-4 relative">
-                    <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${t.color} p-[2px]`}>
-                      <div className="w-full h-full rounded-full bg-[#020617] flex items-center justify-center text-xs font-bold text-white">{t.initials}</div>
-                    </div>
-                    <div>
-                      <div className="text-white font-bold text-sm">{t.name}</div>
-                      <div className="text-slate-500 text-xs">{t.role}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
         </div>
       );
       case 'knowledge': return (
